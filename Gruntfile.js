@@ -60,8 +60,8 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     '<%= dirs.bower %>/jquery/dist/jquery.js',
+                    '<%= dirs.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
                     '<%= dirs.js %>/*.js',
-                    '!<%= dirs.js %>/modernizr.js',
                     '!<%= dirs.js %>/build.js'
                 ],
                 dest: '<%= dirs.js %>/build.js',
@@ -73,8 +73,6 @@ module.exports = function(grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= dirs.js %>/*.js',
-                '!<%= dirs.js %>/handlebars-v1.3.0.js',
-                '!<%= dirs.js %>/modernizr.js',
                 '!<%= dirs.js %>/build.js'
             ]
         },
