@@ -64,6 +64,7 @@ module.exports = function(grunt) {
                     '<%= dirs.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
                     '<%= dirs.bower %>/handlebars/handlebars.js',
                     '<%= dirs.js %>/*.js',
+                    '!<%= dirs.js %>/modernizr.js',
                     '!<%= dirs.js %>/build.js'
                 ],
                 dest: '<%= dirs.js %>/build.js',
@@ -75,6 +76,7 @@ module.exports = function(grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= dirs.js %>/*.js',
+                '!<%= dirs.js %>/modernizr.js',
                 '!<%= dirs.js %>/build.js'
             ]
         },
@@ -93,7 +95,8 @@ module.exports = function(grunt) {
         uglify: {
             all: {
                 files: {
-                    '<%= dirs.js %>/build.js': ['<%= dirs.js %>/build.js']
+                    '<%= dirs.js %>/build.js': ['<%= dirs.js %>/build.js'],
+                    '<%= dirs.js %>/modernizr.js': ['<%= dirs.bower %>/modernizr/modernizr.js']
                 }
             }
         },
