@@ -62,6 +62,7 @@ module.exports = function(grunt) {
                 src: [
                     '<%= dirs.bower %>/jquery/dist/jquery.js',
                     '<%= dirs.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+                    '<%= dirs.bower %>/handlebars/handlebars.js',
                     '<%= dirs.js %>/*.js',
                     '!<%= dirs.js %>/build.js'
                 ],
