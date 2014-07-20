@@ -7,7 +7,8 @@ module.exports = function(grunt) {
             bower: 'bower_components',
             css: 'assets/css',
             js: 'assets/js',
-            images: 'assets/images'
+            images: 'assets/images',
+            fonts: 'assets/fonts'
         },
 
         // SCSS
@@ -106,6 +107,14 @@ module.exports = function(grunt) {
                     dest: '<%= dirs.images %>'
                 }]
             }
+        },
+
+        // Copy
+        copy: {
+          main: {
+            files: [
+              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'}            ]
+          }
         },
 
         // Watch
