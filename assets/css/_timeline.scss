@@ -5,17 +5,6 @@
     top: 50px;
 }
 
-.timeline:before {
-    top: 50px;
-    bottom: 0;
-    position: absolute;
-    content: " ";
-    width: 3px;
-    background-color: #eeeeee;
-    left: 50%;
-    margin-left: -1.5px;
-}
-
 .timeline > li {
     margin-bottom: 20px;
     position: relative;
@@ -77,6 +66,7 @@
 }
 
 .timeline > li > .timeline-badge {
+    position: relative;
     color: #fff;
     width: 50px;
     height: 50px;
@@ -87,13 +77,31 @@
     top: 16px;
     left: 50%;
     margin-left: -25px;
-    background-color: #999999;
     z-index: 100;
-    border-top-right-radius: 50%;
-    border-top-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
+    img {
+        max-width: 100%;
+        border-radius: 50%;
+        z-index: 100;
+    }
+    &:after {
+        width: 4px;
+        margin-left: -2px;
+        height: 100px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        content: '';
+        background: #eee;
+        z-index: -1;
+    }
 }
+
+.timeline > li:last-child > .timeline-badge {
+    &:after {
+        display: none;
+    }
+}
+
 
 .timeline > li.timeline-inverted > .timeline-panel {
     float: right;
