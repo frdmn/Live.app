@@ -1,0 +1,21 @@
+.modal {
+  padding: 20px 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(white, .95);
+  z-index: 400;
+  display: none;
+}
+
+.modal--open {
+  display: block;
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
