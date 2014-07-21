@@ -7,3 +7,5 @@ bower_components
 assets/css/style.css
 assets/js/build.js
 assets/fonts
+
+settings.json

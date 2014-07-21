@@ -25,5 +25,17 @@ $(function() {
 			}
 		}
 	});
+
+	var settingsFile = '../../settings.json';
+	var settings = [];
+	$.ajax({
+		type: 'GET',
+		url: settingsFile,
+		dataType: 'json',
+		success: function(data) { settings = data;},
+		async: false
+	});
+
+	console.log(settings.apiKey);
 });
 
