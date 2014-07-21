@@ -1,6 +1,18 @@
-/*
- * Online/offline status indicator 
- */
+/* General */
+
+.pseudobutton {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    .sidebar-nav & {
+        color: #aaa;
+        text-align: left;
+        width: 100%;
+    }
+}
+
+/* Online/offline status indicator */
 
 .bubble {
     display: inline-block;
@@ -22,3 +34,4 @@
     background-color: #c9302c;
     border-color: #ac2925;
 }
+

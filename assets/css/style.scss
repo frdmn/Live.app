@@ -1,5 +1,9 @@
+// Variables
 $icon-font-path: "../fonts/";
+$z-index-modal: 999999;
+$z-index-sidebar: 555555;
 
+// Imports
 @import 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap';
 
 @import 'main';

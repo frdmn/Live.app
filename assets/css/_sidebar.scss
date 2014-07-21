@@ -11,7 +11,7 @@
     position: fixed;
     height: 100%;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: $z-index-sidebar;
     transition: all 0.4s ease 0s;
 }
 

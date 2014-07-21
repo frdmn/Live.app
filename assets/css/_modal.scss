@@ -6,7 +6,7 @@
   right: 0;
   bottom: 0;
   background: rgba(white, .95);
-  z-index: 400;
+  z-index: $z-index-modal;
   display: none;
 }
 
