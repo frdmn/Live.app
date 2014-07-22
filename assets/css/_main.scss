@@ -35,3 +35,8 @@
     border-color: #ac2925;
 }
 
+/* blockUI */
+
+.blockUI {
+    z-index: $z-index-blockUI !important;    
+}

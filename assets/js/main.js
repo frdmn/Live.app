@@ -26,6 +26,8 @@ $(function() {
 		}
 	});
 
+	/* Load settings */
+
 	var settingsFile = '../../settings.json';
 	var settings = [];
 	$.ajax({
@@ -38,15 +40,35 @@ $(function() {
 
 	console.log(settings.apiKey);
 
+	/* Block interactions */
+
+	$.blockUI({ 
+		css: { 
+			border: 'none', 
+			padding: '15px', 
+			backgroundColor: '#000', 
+			'-webkit-border-radius': '10px', 
+			'-moz-border-radius': '10px', 
+			opacity: 0.5,
+			color: '#fff'
+		},
+		message: "<h1>Checking API key...</h1>"
+	}); 
+
+	/* Initial API check */
+
 	$.ajaxSetup({
 		beforeSend: function(xhr) {
-			xhr.setRequestHeader('x-auth', settings.apiKey);
+			xhr.setRequestHeader('X-AUTH', settings.apiKey);
 		}
 	});
 
 	$.get('https://xboxapi.com/v2/accountXuid', function (data) {
 		console.log(data);
+		// Unblock interactions
+		$.unblockUI();
 	});
 
+   
 });
 
