@@ -37,5 +37,16 @@ $(function() {
 	});
 
 	console.log(settings.apiKey);
+
+	$.ajaxSetup({
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('x-auth', settings.apiKey);
+		}
+	});
+
+	$.get('https://xboxapi.com/v2/accountXuid', function (data) {
+		console.log(data);
+	});
+
 });
 
