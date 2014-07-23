@@ -15,7 +15,7 @@ Main page
 
 Mobile view
 
-![](http://up.frd.mn/zXJOp.png)
+![](http://up.frd.mn/vw1mL.png)
 
 ### Requirements
 
