@@ -45,14 +45,14 @@ $(function() {
 	$.blockUI({ 
 		css: { 
 			border: 'none', 
-			padding: '15px', 
+			padding: '10px', 
 			backgroundColor: '#000', 
-			'-webkit-border-radius': '10px', 
-			'-moz-border-radius': '10px', 
+			'-webkit-border-radius': '4px', 
+			'-moz-border-radius': '4px', 
 			opacity: 0.5,
 			color: '#fff'
 		},
-		message: "<h1>Checking API key...</h1>"
+		message: "Checking API key..."
 	}); 
 
 	/* Initial API check */
