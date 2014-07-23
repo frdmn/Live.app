@@ -63,10 +63,10 @@ $(function() {
 		}
 	});
 
-	/* api call function */
+	/* API call function */
 
 	var apiCall = function (endpoint, callback) {
-		$.get('https://xboxapi.com/v2/'+endpoint, function (data) {
+		$.get('https://xboxapi.com/v2'+endpoint, function (data) {
 			callback(data);
 
 			// Unblock interactions
@@ -80,10 +80,16 @@ $(function() {
 		});
 	};
 
-	apiCall('messages', function(data) {
-		console.log(data);
-		$(data).each( function( key, value ) {
-			$('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble bubble--online"></div>' + value.header.sender + '</button></li>');
+	/* Test call */
+	apiCall('/messages', function(data) {
+		var messages = data;
+		$(messages).each(function(k,v) {
+			if(v.header.hasText) {
+				var sender = v.header.sender;
+				var xuid = v.header.senderXuid;
+				var message = v.messageSummary;
+				console.log(sender + ' (' + xuid + '): ' + message);
+			}
 		});
 	});
 });
