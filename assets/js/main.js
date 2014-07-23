@@ -63,18 +63,28 @@ $(function() {
 		}
 	});
 
-	$.get('https://xboxapi.com/v2/accountXuid', function (data) {
-		console.log(data);
-		// Unblock interactions
-		$.unblockUI();
-        $.bootstrapGrowl("API connection successful established :)", { type: 'success' });
-	}).fail(function() {
-		// Unblock interactions
-		$.unblockUI();
-		// Send notification
-        $.bootstrapGrowl("Couldn't establish API connection :(", { type: 'danger' });
-	});
+	/* api call function */
 
-   
+	var apiCall = function (endpoint, callback) {
+		$.get('https://xboxapi.com/v2/'+endpoint, function (data) {
+			callback(data);
+
+			// Unblock interactions
+			$.unblockUI();
+			$.bootstrapGrowl("API connection successful established :)", { type: 'success' });
+		}).fail(function() {
+			// Unblock interactions
+			$.unblockUI();
+			// Send notification
+			$.bootstrapGrowl("Couldn't establish API connection :(", { type: 'danger' });
+		});
+	};
+
+	apiCall('messages', function(data) {
+		console.log(data);
+		$(data).each( function( key, value ) {
+			$('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble bubble--online"></div>' + value.header.sender + '</button></li>');
+		});
+	});
 });
 
