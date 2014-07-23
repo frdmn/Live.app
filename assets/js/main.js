@@ -67,6 +67,12 @@ $(function() {
 		console.log(data);
 		// Unblock interactions
 		$.unblockUI();
+        $.bootstrapGrowl("API connection successful established :)", { type: 'success' });
+	}).fail(function() {
+		// Unblock interactions
+		$.unblockUI();
+		// Send notification
+        $.bootstrapGrowl("Couldn't establish API connection :(", { type: 'danger' });
 	});
 
    

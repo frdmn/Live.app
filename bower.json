@@ -19,6 +19,7 @@
     "bootstrap-sass-official": "~3.2.0",
     "handlebars": "~1.3.0",
     "modernizr": "~2.8.3",
-    "blockui": "*"
+    "blockui": "*",
+    "bootstrap-growl": "~1.1.0"
   }
 }
