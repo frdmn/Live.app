@@ -3,7 +3,11 @@ Live.app
 
 JavaScript based web app to chat with your Xbox Live friends.
 
+Work in progress!
+
 ### Screenshots
+
+(These are just mockups at the moment, since this project is WIP!)
 
 Main page
 
@@ -11,7 +15,7 @@ Main page
 
 Mobile view
 
-![](http://up.frd.mn/Jgjhd.png)
+![](http://up.frd.mn/zXJOp.png)
 
 ### Requirements
 
