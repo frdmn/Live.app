@@ -93,7 +93,7 @@ $(function() {
 		});
 	}); */
 
-	apiCall('/2535426820984902/friends', function(data){
+	apiCall('/' + settings.xuid + '/friends', function(data){
 		var friends = data;
 		$(friends).each(function(k,v) {
 			$('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
