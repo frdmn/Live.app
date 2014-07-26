@@ -15,6 +15,10 @@ $(function() {
     // Close modal
     $(".close-modal").click(function() {
         $(".modal").removeClass("modal--open");
+        // For some reason we need to wait at least 1 ms to refresh
+        setTimeout(function() {
+            location.reload();
+        }, 1);
     });
 
     // Listen on ESC to close modal
@@ -107,7 +111,7 @@ $(function() {
             // If no data in callback available => enable inputs again
             if (!data) {
                 $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
-                $('.modal button').attr("disabled", false);
+                $('.modal submit-button').attr("disabled", false);
                 $(".modal input").prop('disabled', false);
             // Data in callback => save in PouchDB and reload page 
             } else {
@@ -204,7 +208,7 @@ $(function() {
         if (!data) {
             $(".modal").addClass("modal--open");
 
-            $('.modal button').click(function (){
+            $('.modal submit-button').click(function (){
                 $(this).attr("disabled", true);
                 $(".modal input").prop('disabled', true);
                 setSettings();
