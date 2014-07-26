@@ -1,13 +1,13 @@
 Live.app
 ========
 
-JavaScript based web app to chat with your Xbox Live friends.
+Live.app is a client side JavaScript web app to message your Xbox Live friends. It uses the great RESTful [XboxAPI.com](https://xboxapi.com/) to communicate with Xbox Live. PouchDB is used as IndexDB/WebSQL storage to cache and deliver the actual informations more quickly and also to reduce the actual API calls to XboxAPI. You can adjust the caching per endpoint in the `settings.json` configuration file if needed.
 
-Work in progress!
+The project is a work in progress!
 
 ### Screenshots
 
-(These are just mockups at the moment, since this project is WIP!)
+(These are just mockups at the moment, since this project is still WIP!)
 
 Main page
 
