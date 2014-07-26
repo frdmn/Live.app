@@ -5,11 +5,11 @@ General todos:
   ☐ Add a favicon
 
 Specific / new features:
-☐ Actually implement Handlebars.js
-☐ Feature to clear client side PouchDB
-☐ Possible to show status of friends without waste tons of valuable API calls?
-☐ .dmg creator Grunt task? 
-☐ Use `grunt-node-webkit-builder` and build "native" (not really) apps @started(14-07-26 23:15)
-  ✔ Created new branch (node-webkit-test) d @done (14-07-26 22:59)
-  ✔ Adjust Gruntfile @done (14-07-26 22:17)
-  ☐ Add a App icon for node-webkit-builder
+  ☐ Actually implement Handlebars.js
+  ☐ Feature to clear client side PouchDB
+  ☐ Possible to show status of friends without waste tons of valuable API calls?
+  ☐ .dmg creator Grunt task? 
+  ☐ Use `grunt-node-webkit-builder` and build "native" (not really) apps @started(14-07-26 22:57)
+    ✔ Created new branch (node-webkit-test) @done (14-07-26 22:59)
+    ✔ Adjust Gruntfile @done (14-07-26 22:17)
+    ☐ Add a App icon for node-webkit-builder
