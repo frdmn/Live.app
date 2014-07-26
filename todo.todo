@@ -1,0 +1,8 @@
+General:
+  ☐ Use API key out of PouchDB instead of settings.json
+  ☐ Start with the message form modal
+  ☐ Feature to clear client side PouchDB
+  ☐ Possible to show status of friends without waste tons of valuable API calls
+  ☐ Actually implement Handlebars.js
+  ☐ A bit more information in the initial settings UI
+  ☐ Use `grunt-node-webkit-builder` and build "native" (not really) apps
