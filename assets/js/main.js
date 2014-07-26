@@ -53,7 +53,7 @@ $(function() {
 
             // If no result or caching value exceeded => call API directly
             if (!response || ((timestampNow - response.timestamp) / 1000 >= cache)) {
-                console.log("[INFO] API call started");
+                console.log('[INFO] API call "' + endpoint + '" started');
                 retrieveApiData(function(data) {
                     // Get existing results
                     pouchdb.get('apiData', function(err, otherDoc) {
@@ -75,15 +75,15 @@ $(function() {
                     // Send callback
                     callback(data);
 
-                    console.log("[INFO] API call finished");
+                    console.log('[INFO] API call "' + endpoint + '" finished');
                 });
             // Otherwise return cached API results out of PouchDB
             } else {
-                console.log("[INFO] DB call started");
+                console.log('[INFO] DB call "' + endpoint + '" started');
                 retrieveDbData(function(data){
                     // Send callback
                     callback(data);
-                    console.log("[INFO] DB call finished");
+                    console.log('[INFO] DB call "' + endpoint + '" finished');
                 });
             }
         });
@@ -99,10 +99,10 @@ $(function() {
 
             $.get('https://xboxapi.com/v2'+endpoint, function (data) {
                 cb(data);
-                $.bootstrapGrowl("API call successful :)", { type: 'success' });
+                $.bootstrapGrowl('API call successful :)', { type: 'success' });
             }).fail(function() {
                 // Send notification
-                $.bootstrapGrowl("Couldn't connect to API :(", { type: 'danger' });
+                $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
             });
         };
 
@@ -136,13 +136,19 @@ $(function() {
     // Test call to render messages
     apiCall('/messages', settings.cache.messages, function(data){
         var messages = data;
+        var i = 0;
         // Clear timeline
         $('.timeline').html('');
         // Add button for each friend
         $(messages).each(function(k,v) {
+            i++;
+            var liClass ='';
+            if(i%2 === 0){
+                liClass='class="timeline-inverted"';
+            }
             if (v.header.hasText) {
                 $('.timeline').append('\
-<li>\
+<li ' + liClass + '>\
   <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
   <div class="timeline-panel">\
     <div class="timeline-heading">\
