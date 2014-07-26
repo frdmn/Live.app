@@ -40,6 +40,85 @@ $(function() {
 
     console.log('API key: ' + settings.apiKey);
 
+    /* Function to check for settings DB */
+
+    var getSettings = function (cb) {
+        var pouchdb = new PouchDB('settings');
+        pouchdb.get('settings', function(err, doc) {
+            if (err) {console.log(err);}
+            if (!doc) { 
+                $.bootstrapGrowl('No API key found. Please enter in the settings modal.', { type: 'info' });
+                cb(false);
+            } else {
+                cb(doc);
+            }
+        });
+    };
+
+    /* Function to save settings in DB */
+    
+    var setSettings = function () {
+        var apiKey = $('.modal input').val();
+
+        var saveSetting = function() {
+            // PouchDB init
+            var pouchdb = new PouchDB('settings');
+
+            var settingsData = {};
+            settingsData.apiKey = apiKey;
+
+            // Get existing results
+            pouchdb.get('settings', function(err, otherDoc) {
+                // If no exisiting results, put without revision
+                if (!otherDoc) {
+                    pouchdb.put({
+                        settings: settingsData,
+                        timestamp: $.now()
+                    }, 'settings');
+                // Otherwise put with revision of outdated results
+                } else {
+                    pouchdb.put({
+                        settings: settingsData,
+                        timestamp: $.now()
+                    }, 'settings', otherDoc._rev);
+                }
+            });
+        };
+       
+        // Function to check API key
+        var checkApiKey = function(cb) {
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-AUTH', apiKey);
+                }
+            });
+
+            // Send request to check API key and also store the Xuid on success 
+            $.get('https://xboxapi.com/v2/accountXuid', function (data) {
+                cb(data);
+            // Return false
+            }).fail(function() {
+                cb(false);
+            });
+        };
+
+        checkApiKey(function(data){
+            if (!data) {
+                $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
+                $('.modal button').attr("disabled", false);
+                $(".modal input").prop('disabled', false);
+            } else {
+                saveSetting(function (){
+                    console.log("Settings saved in PouchDB");
+                    $.bootstrapGrowl('Valic API key!', { type: 'success' });
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                });
+            }
+        });
+    };
+
     /* API call function */
 
     var apiCall = function (endpoint, cache, callback) {
@@ -116,38 +195,50 @@ $(function() {
         };
     };
 
-    // Test call to render the friends in the sidebar
-    apiCall('/' + settings.xuid + '/friends', settings.cache.friends, function(data){
-        var friends = data;
-        // Remove loading element
-        $('.friendlist').html('');
-        // Add button for each friend
-        $(friends).each(function(k,v) {
-            $('.friendlist').append('\
+    // Check for existing settings in PouchDB
+
+    getSettings(function(data){
+        if (!data) {
+            $(".modal").addClass("modal--open");
+
+            $('.modal button').click(function (){
+                $(this).attr("disabled", true);
+                $(".modal input").prop('disabled', true);
+                setSettings();
+            });
+        } else {
+            // Test call to render the friends in the sidebar
+            apiCall('/' + settings.xuid + '/friends', settings.cache.friends, function(data){
+                var friends = data;
+                // Remove loading element
+                $('.friendlist').html('');
+                // Add button for each friend
+                $(friends).each(function(k,v) {
+                    $('.friendlist').append('\
 <li>\
     <button class="pseudobutton open-modal">\
         <div class="bubble"></div> \
         ' + v.GameDisplayName + '\
     </button>\
 </li>');
-        });
-    });
+                });
+            });
 
-    // Test call to render messages
-    apiCall('/messages', settings.cache.messages, function(data){
-        var messages = data;
-        var i = 0;
-        // Clear timeline
-        $('.timeline').html('');
-        // Add button for each friend
-        $(messages).each(function(k,v) {
-            var liClass ='';
-            if(i%2 === 0){
-                liClass='class="timeline-inverted"';
-            }
-            if (v.header.hasText) {
-                i++;
-                $('.timeline').append('\
+            // Test call to render messages
+            apiCall('/messages', settings.cache.messages, function(data){
+                var messages = data;
+                var i = 0;
+                // Clear timeline
+                $('.timeline').html('');
+                // Add button for each friend
+                $(messages).each(function(k,v) {
+                    var liClass ='';
+                    if(i%2 === 0){
+                        liClass='class="timeline-inverted"';
+                    }
+                    if (v.header.hasText) {
+                        i++;
+                        $('.timeline').append('\
 <li ' + liClass + '>\
   <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
   <div class="timeline-panel">\
@@ -160,8 +251,10 @@ $(function() {
     </div>\
   </div>\
 </li>');
-            }
-        });
+                    }
+                });
+            });
+        }
     });
 });
 
