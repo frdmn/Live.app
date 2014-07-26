@@ -26,7 +26,7 @@ $(function() {
         }
     });
 
-    /* Load settings */
+    /* Load settings (synchronously) */
 
     var settingsFile = '../../settings.json';
     var settings = [];
@@ -102,15 +102,18 @@ $(function() {
             });
         };
 
+        // Execute API check function
         checkApiKey(function(data){
+            // If no data in callback available => enable inputs again
             if (!data) {
                 $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
                 $('.modal button').attr("disabled", false);
                 $(".modal input").prop('disabled', false);
+            // Data in callback => save in PouchDB and reload page 
             } else {
+                // Execute function to save settings
                 saveSetting(function (){
-                    console.log("Settings saved in PouchDB");
-                    $.bootstrapGrowl('Valic API key!', { type: 'success' });
+                    $.bootstrapGrowl('Valic API key! Successfully saved', { type: 'success' });
                     setTimeout(function() {
                         location.reload();
                     }, 2000);
