@@ -43,20 +43,18 @@ $(function() {
     /* API call function */
 
     var apiCall = function (endpoint, callback) {
+        // PouchDB init
         var pouchdb = new PouchDB(endpoint),
             pouchrows;
 
+        // Try to get the cached API results out of PouchDB
         pouchdb.get('apiData', function(err, response) {
             timestampNow = $.now();
 
-            console.log('response.timestamp: ' + response.timestamp);
-            console.log('timestampNow: ' + timestampNow);
-            console.log('settings.cache.friends: ' + settings.cache.friends);
-            console.log((timestampNow - response.timestamp) / 1000);
-
+            // If no result or caching value exceeded => call API directly
             if (!response || ((timestampNow - response.timestamp) / 1000 >= settings.cache.friends)) {
                 console.log("[INFO] API call started");
-                callApi(function(data) {
+                retrieveApiData(function(data) {
                     pouchdb.get('apiData', function(err, otherDoc) {
                         pouchdb.put({
                             apiData: data,
@@ -65,23 +63,24 @@ $(function() {
                             console.log(err, response);
                         });
                     });
-                    
-                    console.log(data);
+
                     callback(data);
 
                     console.log("[INFO] API call finished");
                 });
+            // Otherwise return cached API results out of PouchDB
             } else {
                 console.log("[INFO] DB call started");
-                callDb(function(data){
-                    console.log(data);
+                retrieveDbData(function(data){
                     callback(data);
                     console.log("[INFO] DB call finished");
                 });
             }
         });
 
-        var callApi = function(cb) {
+        /* Retrieve direct API data function */
+        
+        var retrieveApiData = function(cb) {
             $.ajaxSetup({
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-AUTH', settings.apiKey);
@@ -97,7 +96,9 @@ $(function() {
             });
         };
 
-        var callDb = function (cb) {
+        /* Retrieve DB data function */
+
+        var retrieveDbData = function (cb) {
             pouchdb.get('apiData', function(err, doc) {
                 if (err) {console.log(err);}
                 cb(doc.apiData);
@@ -105,22 +106,10 @@ $(function() {
         };
     };
 
-    /* Test /messages call
-    apiCall('/messages', function(data) {
-        var messages = data;
-        $(messages).each(function(k,v) {
-            if(v.header.hasText) {
-                var sender = v.header.sender;
-                var xuid = v.header.senderXuid;
-                var message = v.messageSummary;
-                console.log(sender + ' (' + xuid + '): ' + message);
-            }
-        });
-    }); */
-
+    // Test call to render the friends in the sidebar
     apiCall('/' + settings.xuid + '/friends', function(data){
         var friends = data;
-        console.log("asdads");
+        // Add button for each friend
         $(friends).each(function(k,v) {
             $('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
         });
