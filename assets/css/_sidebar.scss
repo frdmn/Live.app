@@ -15,6 +15,11 @@
     transition: all 0.4s ease 0s;
 }
 
+#sidebar-wrapper h1 {
+    margin-left: 20px;
+    font-size: 32px;
+}
+
 #page-content-wrapper {
     width: 100%;
     padding: 0 50px;
@@ -25,7 +30,6 @@
 
 .sidebar-nav {
     position: absolute;
-    top: 0;
     width: 250px;
     list-style: none;
     margin: 0;
@@ -92,8 +96,8 @@
 }
 
 .content-header hr {
-	margin-top: 0px;
-	margin-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #menu-toggle {
