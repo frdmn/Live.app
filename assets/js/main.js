@@ -107,6 +107,8 @@ $(function() {
     // Test call to render the friends in the sidebar
     apiCall('/' + settings.xuid + '/friends','friends', function(data){
         var friends = data;
+        // Remove loading element
+        $('.friendlist').html('');
         // Add button for each friend
         $(friends).each(function(k,v) {
             $('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
