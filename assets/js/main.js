@@ -15,10 +15,10 @@ $(function() {
     // Close modal
     $(".close-modal").click(function() {
         $(".modal").removeClass("modal--open");
-        // For some reason we need to wait at least 1 ms to refresh
+        $.bootstrapGrowl('No data to show. Refresh to show settings modal again in three seconds.', { type: 'info' });
         setTimeout(function() {
             location.reload();
-        }, 1);
+        }, 3000);
     });
 
     // Listen on ESC to close modal
