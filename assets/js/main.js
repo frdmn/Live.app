@@ -55,13 +55,24 @@ $(function() {
             if (!response || ((timestampNow - response.timestamp) / 1000 >= cache)) {
                 console.log("[INFO] API call started");
                 retrieveApiData(function(data) {
+                    // Get existing results
                     pouchdb.get('apiData', function(err, otherDoc) {
-                        pouchdb.put({
-                            apiData: data,
-                            timestamp: $.now()
-                        }, 'apiData', otherDoc._rev);
+                        // If no exisiting results, put without revision
+                        if (!otherDoc) {
+                            pouchdb.put({
+                                apiData: data,
+                                timestamp: $.now()
+                            }, 'apiData');
+                        // Otherwise put with revision of outdated results
+                        } else {
+                            pouchdb.put({
+                                apiData: data,
+                                timestamp: $.now()
+                            }, 'apiData', otherDoc._rev);
+                        }
                     });
 
+                    // Send callback
                     callback(data);
 
                     console.log("[INFO] API call finished");
@@ -70,6 +81,7 @@ $(function() {
             } else {
                 console.log("[INFO] DB call started");
                 retrieveDbData(function(data){
+                    // Send callback
                     callback(data);
                     console.log("[INFO] DB call finished");
                 });
@@ -111,7 +123,38 @@ $(function() {
         $('.friendlist').html('');
         // Add button for each friend
         $(friends).each(function(k,v) {
-            $('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
+            $('.friendlist').append('\
+<li>\
+    <button class="pseudobutton open-modal">\
+        <div class="bubble"></div> \
+        ' + v.GameDisplayName + '\
+    </button>\
+</li>');
+        });
+    });
+
+    // Test call to render messages
+    apiCall('/messages', settings.cache.messages, function(data){
+        var messages = data;
+        // Clear timeline
+        $('.timeline').html('');
+        // Add button for each friend
+        $(messages).each(function(k,v) {
+            if (v.header.hasText) {
+                $('.timeline').append('\
+<li>\
+  <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
+  <div class="timeline-panel">\
+    <div class="timeline-heading">\
+      <h4 class="timeline-title"><div class="bubble bubble--online"></div> ' + v.header.sender + '</h4>\
+      <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + v.header.sent + '</small></p>\
+    </div>\
+    <div class="timeline-body">\
+      <p>' + v.messageSummary + '</p>\
+    </div>\
+  </div>\
+</li>');
+            }
         });
     });
 });
