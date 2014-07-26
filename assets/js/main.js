@@ -40,16 +40,6 @@ $(function() {
 
     console.log(settings.apiKey);
 
-
-
-    /* Initial API check */
-
-    $.ajaxSetup({
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-AUTH', settings.apiKey);
-        }
-    });
-
     /* API call function */
 
     var apiCall = function (endpoint, callback) {
@@ -61,7 +51,6 @@ $(function() {
             pouchrows = response.total_rows;
             console.log(pouchrows);
             if (pouchrows === 0) {
-                // callApi();
                 console.log("APICALL");
                 pouchdb.put({
                     _id: 'davasdasde@gmail.com',
@@ -75,6 +64,12 @@ $(function() {
         });
 
         var callApi = function() {
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-AUTH', settings.apiKey);
+                }
+            });
+
             $.get('https://xboxapi.com/v2'+endpoint, function (data) {
                 callback(data);
                 $.bootstrapGrowl("API call successful :)", { type: 'success' });
