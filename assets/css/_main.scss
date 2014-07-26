@@ -41,3 +41,9 @@
 .blockUI {
     z-index: $z-index-blockUI !important;    
 }
+
+/* bootstrap-growl */
+
+.bootstrap-growl {
+    z-index: $z-index-bootstrap-growl;
+}
