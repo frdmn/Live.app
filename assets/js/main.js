@@ -43,27 +43,34 @@ $(function() {
     /* API call function */
 
     var apiCall = function (endpoint, callback) {
-
         var pouchdb = new PouchDB(endpoint),
             pouchrows;
 
         pouchdb.allDocs({include_docs: true}, function(err, response) {
             pouchrows = response.total_rows;
+            console.log(response);
+
             console.log(pouchrows);
             if (pouchrows === 0) {
-                console.log("APICALL");
-                pouchdb.put({
-                    _id: 'davasdasde@gmail.com',
-                    name: 'Davidsss',
-                    age: 67
+                console.log("[INFO] API call started");
+                callApi(function(data) {
+                    console.log(data);
+                    pouchdb.put({
+                        _id: 'apiData',
+                        apiData: data
+                    });
+                    console.log("[INFO] API call finished");
                 });
             } else {
-                // callDb();
-                console.log("DBCALL");
+                console.log("[INFO] DB call started");
+                callDb(function(data){
+                    console.log(data);
+                    console.log("[INFO] DB call finished");
+                });
             }
         });
 
-        var callApi = function() {
+        var callApi = function(cb) {
             $.ajaxSetup({
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-AUTH', settings.apiKey);
@@ -71,11 +78,18 @@ $(function() {
             });
 
             $.get('https://xboxapi.com/v2'+endpoint, function (data) {
-                callback(data);
+                cb(data);
                 $.bootstrapGrowl("API call successful :)", { type: 'success' });
             }).fail(function() {
                 // Send notification
                 $.bootstrapGrowl("Couldn't connect to API :(", { type: 'danger' });
+            });
+        };
+
+        var callDb = function (cb) {
+            pouchdb.get('apiData', function(err, doc) {
+                if (err) {console.log(err);}
+                cb(doc.apiData);
             });
         };
     };
@@ -94,7 +108,6 @@ $(function() {
     }); */
 
     apiCall('/' + settings.xuid + '/friends', function(data){
-
         var friends = data;
         $(friends).each(function(k,v) {
             $('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
