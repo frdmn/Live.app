@@ -33,9 +33,12 @@ Mobile view
 
 ### settings.json
 
-	{
-		"apiKey": "7126748798ab72c88f6682b8838c282612a27bc2" 
-	}
+    {
+        "cache":{
+            "friends":100,
+            "messages":100
+        }
+    }
 
 ### Dependencies
 
