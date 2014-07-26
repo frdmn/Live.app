@@ -65,6 +65,7 @@ module.exports = function(grunt) {
                     '<%= dirs.bower %>/handlebars/handlebars.js',
                     '<%= dirs.bower %>/blockui/jquery.blockUI.js',
                     '<%= dirs.bower %>/bootstrap-growl/jquery.bootstrap-growl.js',
+                    '<%= dirs.bower %>/pouchdb/dist/pouchdb-nightly.min.js',
                     '<%= dirs.js %>/*.js',
                     '!<%= dirs.js %>/modernizr.js',
                     '!<%= dirs.js %>/build.js'
