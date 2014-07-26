@@ -76,6 +76,9 @@ module.exports = function(grunt) {
 
         // JShint
         jshint: {
+            options: {
+                multistr: true
+            },
             all: [
                 'Gruntfile.js',
                 '<%= dirs.js %>/*.js',
