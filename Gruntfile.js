@@ -1,24 +1,3 @@
-var parseBuildPlatforms = function(argumentPlatform) {
-    // this will make it build no platform when the platform option is specified
-    // without a value which makes argumentPlatform into a boolean
-    var inputPlatforms = argumentPlatform || process.platform + ";" + process.arch;
-
-    // Do some scrubbing to make it easier to match in the regexes bellow
-    inputPlatforms = inputPlatforms.replace("darwin", "mac");
-    inputPlatforms = inputPlatforms.replace(/;ia|;x|;arm/, "");
-
-    var buildAll = /^all$/.test(inputPlatforms);
-
-    var buildPlatforms = {
-        mac: /mac/.test(inputPlatforms) || buildAll,
-        win: /win/.test(inputPlatforms) || buildAll,
-        linux32: /linux32/.test(inputPlatforms) || buildAll,
-        linux64: /linux64/.test(inputPlatforms) || buildAll
-    };
-
-    return buildPlatforms;
-};
-
 module.exports = function(grunt) {
     var buildPlatforms = parseBuildPlatforms(grunt.option('platforms'));
     var currentVersion = grunt.file.readJSON('package.json').version;
@@ -184,13 +163,34 @@ module.exports = function(grunt) {
                 linux32: buildPlatforms.linux32,
                 linux64: buildPlatforms.linux64
             },
-            src: ['./assets/js/*.js', './assets/css/*.css', './settings.json', './node_modules/**', '!./node_modules/**', './index.html', './package.json', './README.md' ]
+            src: ['./assets/css/*.css', './assets/fonts/*', './assets/js/*.js', './settings.json', './node_modules/**', '!./node_modules/**', './index.html', './package.json', './README.md' ]
         }
     });
 
     grunt.loadNpmTasks('grunt-node-webkit-builder');
 
-    grunt.registerTask('default', ['sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
+    grunt.registerTask('default', ['sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin', 'build']);
     grunt.registerTask('dev', ['connect', 'watch']);
-    grunt.registerTask('build', ['default', 'nodewebkit']);
+    grunt.registerTask('build', ['nodewebkit']);
+};
+
+var parseBuildPlatforms = function(argumentPlatform) {
+    // this will make it build no platform when the platform option is specified
+    // without a value which makes argumentPlatform into a boolean
+    var inputPlatforms = argumentPlatform || process.platform + ";" + process.arch;
+
+    // Do some scrubbing to make it easier to match in the regexes bellow
+    inputPlatforms = inputPlatforms.replace("darwin", "mac");
+    inputPlatforms = inputPlatforms.replace(/;ia|;x|;arm/, "");
+
+    var buildAll = /^all$/.test(inputPlatforms);
+
+    var buildPlatforms = {
+        mac: /mac/.test(inputPlatforms) || buildAll,
+        win: /win/.test(inputPlatforms) || buildAll,
+        linux32: /linux32/.test(inputPlatforms) || buildAll,
+        linux64: /linux64/.test(inputPlatforms) || buildAll
+    };
+
+    return buildPlatforms;
 };
