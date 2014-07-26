@@ -167,8 +167,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
-
     grunt.registerTask('default', ['sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin', 'build']);
     grunt.registerTask('dev', ['connect', 'watch']);
     grunt.registerTask('build', ['nodewebkit']);
