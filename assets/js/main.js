@@ -42,7 +42,7 @@ $(function() {
 
     /* API call function */
 
-    var apiCall = function (endpoint, type, callback) {
+    var apiCall = function (endpoint, cache, callback) {
         // PouchDB init
         var pouchdb = new PouchDB(endpoint),
             pouchrows;
@@ -52,7 +52,7 @@ $(function() {
             timestampNow = $.now();
 
             // If no result or caching value exceeded => call API directly
-            if (!response || ((timestampNow - response.timestamp) / 1000 >= settings.cache[type])) {
+            if (!response || ((timestampNow - response.timestamp) / 1000 >= cache)) {
                 console.log("[INFO] API call started");
                 retrieveApiData(function(data) {
                     pouchdb.get('apiData', function(err, otherDoc) {
@@ -105,7 +105,7 @@ $(function() {
     };
 
     // Test call to render the friends in the sidebar
-    apiCall('/' + settings.xuid + '/friends','friends', function(data){
+    apiCall('/' + settings.xuid + '/friends', settings.cache.friends, function(data){
         var friends = data;
         // Remove loading element
         $('.friendlist').html('');
