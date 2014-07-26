@@ -141,12 +141,12 @@ $(function() {
         $('.timeline').html('');
         // Add button for each friend
         $(messages).each(function(k,v) {
-            i++;
             var liClass ='';
             if(i%2 === 0){
                 liClass='class="timeline-inverted"';
             }
             if (v.header.hasText) {
+                i++;
                 $('.timeline').append('\
 <li ' + liClass + '>\
   <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
