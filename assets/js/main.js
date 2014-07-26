@@ -38,7 +38,7 @@ $(function() {
         async: false
     });
 
-    console.log(settings.apiKey);
+    console.log('API key: ' + settings.apiKey);
 
     /* API call function */
 
@@ -46,25 +46,36 @@ $(function() {
         var pouchdb = new PouchDB(endpoint),
             pouchrows;
 
-        pouchdb.allDocs({include_docs: true}, function(err, response) {
-            pouchrows = response.total_rows;
-            console.log(response);
+        pouchdb.get('apiData', function(err, response) {
+            timestampNow = $.now();
 
-            console.log(pouchrows);
-            if (pouchrows === 0) {
+            console.log('response.timestamp: ' + response.timestamp);
+            console.log('timestampNow: ' + timestampNow);
+            console.log('settings.cache.friends: ' + settings.cache.friends);
+            console.log((timestampNow - response.timestamp) / 1000);
+
+            if (!response || ((timestampNow - response.timestamp) / 1000 >= settings.cache.friends)) {
                 console.log("[INFO] API call started");
                 callApi(function(data) {
-                    console.log(data);
-                    pouchdb.put({
-                        _id: 'apiData',
-                        apiData: data
+                    pouchdb.get('apiData', function(err, otherDoc) {
+                        pouchdb.put({
+                            apiData: data,
+                            timestamp: $.now()
+                        }, 'apiData', otherDoc._rev, function(err, response) {
+                            console.log(err, response);
+                        });
                     });
+                    
+                    console.log(data);
+                    callback(data);
+
                     console.log("[INFO] API call finished");
                 });
             } else {
                 console.log("[INFO] DB call started");
                 callDb(function(data){
                     console.log(data);
+                    callback(data);
                     console.log("[INFO] DB call finished");
                 });
             }
@@ -109,6 +120,7 @@ $(function() {
 
     apiCall('/' + settings.xuid + '/friends', function(data){
         var friends = data;
+        console.log("asdads");
         $(friends).each(function(k,v) {
             $('.friendlist').append('<li><button class="pseudobutton open-modal"><div class="bubble"></div> ' + v.GameDisplayName + '</button></li>');
         });
