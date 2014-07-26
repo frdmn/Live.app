@@ -5,4 +5,6 @@ General:
   ☐ Possible to show status of friends without waste tons of valuable API calls
   ☐ Actually implement Handlebars.js
   ☐ A bit more information in the initial settings UI
-  ☐ Use `grunt-node-webkit-builder` and build "native" (not really) apps
+  ✔ Use `grunt-node-webkit-builder` and build "native" (not really) apps @done (14-07-26 23:11)
+  ☐ Add a favicon
+  ☐ Add a App icon for node-webkit-builder
