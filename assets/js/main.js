@@ -124,7 +124,7 @@ $(function() {
                         i++;
                         $('.timeline').append('\
 <li ' + liClass + '>\
-  <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
+  <div class="timeline-badge"><img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.header.sender) + '/avatarpic-l.png"></div>\
   <div class="timeline-panel">\
     <div class="timeline-heading">\
       <h4 class="timeline-title"><div class="bubble bubble--online"></div> ' + v.header.sender + '</h4>\
