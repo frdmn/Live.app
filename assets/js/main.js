@@ -30,7 +30,7 @@ $(function() {
         }
     });
 
-    /* Load settings (synchronously) */
+    /* Load settings (synchronously) out of the settings.json file */
 
     var settingsFile = '../../settings.json';
     var settings = [];
@@ -43,6 +43,21 @@ $(function() {
     });
 
     console.log('API key: ' + settings.apiKey);
+
+    /* Load settings out of the database */
+
+    var getDBsettings = function (cb) {
+        var pouchdb = new PouchDB('settings');
+        pouchdb.get('settings', function(err, doc) {
+            if (err) {console.log(err);}
+            if (!doc) { 
+                $.bootstrapGrowl('No API key found. Please enter in the settings modal.', { type: 'info' });
+                cb(false);
+            } else {
+                cb(doc);
+            }
+        });
+    };
 
     /* Function to check for settings DB */
 
@@ -182,19 +197,21 @@ $(function() {
         /* Retrieve direct API data function */
         
         var retrieveApiData = function(cb) {
-            $.ajaxSetup({
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-AUTH', settings.apiKey);
-                }
-            });
+            getDBsettings(function (DBsettings){
+                $.ajaxSetup({
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-AUTH', DBsettings.settings.apiKey);
+                    }
+                });
 
-            $.get('https://xboxapi.com/v2'+endpoint, function (data) {
-                cb(data);
-                $.bootstrapGrowl('API call successful :)', { type: 'success' });
-            }).fail(function() {
-                // Send notification
-                $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
-            });
+                $.get('https://xboxapi.com/v2'+endpoint, function (data) {
+                    cb(data);
+                    $.bootstrapGrowl('API call successful :)', { type: 'success' });
+                }).fail(function() {
+                    // Send notification
+                    $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
+                });
+            }); 
         };
 
         /* Retrieve DB data function */
