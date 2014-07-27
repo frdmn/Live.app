@@ -89,7 +89,7 @@ $(function() {
                 $(friends).each(function(k,v) {
                     $('.friendlist').append('\
 <li>\
-    <button class="pseudobutton">\
+    <button class="pseudobutton" data-xuid="' + v.id + '">\
         <span class="sidebar-avatar">\
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
