@@ -125,9 +125,22 @@ module.exports = function(grunt) {
         copy: {
           main: {
             files: [
-              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'}            ]
+              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
+              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-tagsinput/dist/', src: ['bootstrap-tagsinput.css'], dest: '<%= dirs.css %>'}            
+            ]
           }
         },
+
+
+        // Rename/move
+        rename: {
+          main: {
+            files: [
+                  {src: ['<%= dirs.css %>/bootstrap-tagsinput.css'], dest: '<%= dirs.css %>/_bootstrap-tagsinput.scss'},
+                ]
+          }
+        },
+
 
         // Watch
         watch: {
@@ -156,6 +169,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
-    grunt.registerTask('dev', ['connect', 'watch']);
+    grunt.registerTask('default', ['copy', 'rename', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
+    grunt.registerTask('dev', ['copy', 'rename', 'connect', 'watch']);
 };
