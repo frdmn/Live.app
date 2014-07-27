@@ -21,6 +21,7 @@
     "modernizr": "~2.8.3",
     "blockui": "*",
     "bootstrap-growl": "~1.1.0",
-    "pouchdb": "~2.2.3"
+    "pouchdb": "~2.2.3",
+    "bootstrap-tagsinput": "~0.3.14"
   }
 }
