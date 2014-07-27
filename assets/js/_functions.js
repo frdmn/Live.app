@@ -154,3 +154,17 @@ var submitDbData = function (input, endpoint, callback) {
         }
     });
 };
+
+/* Function to open modal */ 
+
+var renderModal = function(recipients, messagebody){
+    console.log(recipients, messagebody);
+    $('.modal#composemessage input#recipients').val(recipients);
+
+    if (messagebody) {
+        $('.modal#composemessage textarea#messagebody').html(messagebody);
+    }
+    
+    $('.modal#composemessage').modal('show');
+    return true;
+};
