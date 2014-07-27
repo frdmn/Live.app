@@ -157,14 +157,25 @@ var submitDbData = function (input, endpoint, callback) {
 
 /* Function to open modal */ 
 
-var renderModal = function(recipients, messagebody){
-    console.log(recipients, messagebody);
-    $('.modal#composemessage input#recipients').val(recipients);
+var renderModal = function(recipientsList, messagebody){
+
+    var recipientsSelector = '.modal#composemessage input#recipients';
+    var messageSelector = '.modal#composemessage textarea#messagebody';
+    var modalSelector = '.modal#composemessage';
+
+    $(recipientsSelector).tagsinput({
+      itemValue: 'xuid',
+      itemText: 'gamertag'
+    });
+
+    $(recipientsList).each(function(k, v){
+        $(recipientsSelector).tagsinput('add', { "xuid": v.xuid , "gamertag": v.gamertag });
+    });
 
     if (messagebody) {
-        $('.modal#composemessage textarea#messagebody').html(messagebody);
+        $(messageSelector).html(messagebody);
     }
     
-    $('.modal#composemessage').modal('show');
+    $(modalSelector).modal('show');
     return true;
 };
