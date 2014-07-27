@@ -63,21 +63,25 @@
         </div>
         <div class="modal">
           <div id="page-content-wrapper">
-            <form class="form-horizontal" role="form">
-              <div class="form-group">
-                <label for="apiKey" class="col-sm-2 control-label">API key</label>
-                <div class="col-sm-8">
+            <div class="col-sm-offset-2 col-sm-8">
+              <div class="jumbotron">
+                <h1>Live.app</h1>
+                <p>It seems that this is the first start of <strong>Live.app</strong>, at least the settings database is empty or missing.You need to setup your XboxAPI.com key in order to use this web app properly. Please enter your API key below and click on "Submit". If it passes the connection check, you can start chatting with your friends!</p>
+                <p><a href="https://github.com/frdmn/Live.app" class="btn btn-primary btn-lg" role="button" target="_blank">Learn more</a></p>
+              </div>
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-8">
+              <div>
+                <div class="form-group">
+                  <label for="apiKey" class="control-label">API key</label>
                   <input type="text" class="form-control" id="apiKey" placeholder="XboxAPI.com API key">
                   <p class="help-block">To use <strong>Live.app</strong> you need an valid API key from <a href="https://xboxapi.com" target="_blank">XboxAPI.com</a>. Since this is a client side application, the API key will be never sent to anyone and remain in your local browser database (IndexedDB/WebSQL).</p>
                 </div>
+                <button class="btn btn-primary submit-button">Submit</button>
+                <button class="btn btn-default close-modal close-button">Close</button>
               </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                  <button class="btn btn-primary submit-button">Submit</button>
-                  <button class="btn btn-default close-modal close-button">Close</button>
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
 

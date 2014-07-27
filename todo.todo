@@ -1,8 +1,8 @@
 General todos:
   ☐ Use API key out of PouchDB instead of settings.json
   ☐ Start with the message form modal
-  ☐ A bit more information in the initial settings UI
-  ☐ Add a favicon
+  ✔ A bit more information in the initial settings UI @done (14-07-27 01:49)
+  ☐ Add a favicon / logo
 
 Specific / new features:
   ☐ Actually implement Handlebars.js
