@@ -89,13 +89,18 @@ $(function() {
                 $(friends).each(function(k,v) {
                     $('.friendlist').append('\
 <li>\
-    <button class="pseudobutton open-modal">\
+    <button class="pseudobutton">\
         <span class="sidebar-avatar">\
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
         ' + v.GameDisplayName + '\
     </button>\
 </li>');
+                });
+
+                // Add click() function to open #composemessage modal
+                $('.pseudobutton').click(function(e) {
+                    renderModal('recipients');
                 });
             });
 
