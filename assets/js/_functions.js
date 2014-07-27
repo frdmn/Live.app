@@ -175,7 +175,39 @@ var renderModal = function(recipientsList, messagebody){
     if (messagebody) {
         $(messageSelector).html(messagebody);
     }
-    
-    $(modalSelector).modal('show');
-    return true;
+
+    retrieveDbData('settings', function(data){
+        if (data) {
+            var myXuid = data.xuid;
+
+            retrieveDbData('/' + myXuid + '/friends', function(data){
+                if (data) {
+                    var friendsList = [];
+
+                    $(data.jsonData).each(function(k,v){
+                        var friendObject = {};
+                        friendObject.xuid = v.id;
+                        friendObject.gamertag = v.Gamertag;
+                        friendsList.push(friendObject);
+                    });
+
+                    console.log(JSON.stringify(friendsList));
+
+                    $(recipientsSelector).tagsinput('input').typeahead({
+                        hint: true,
+                    },{
+                        displayKey: 'xuid',
+                        source: friendsList,
+                        template: '<p>{{gamertag}}</p>'
+                    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+                          this.tagsinput('add', datum.value);
+                          this.tagsinput('input').typeahead('val', '');
+                    }, $(recipientsSelector)));
+                    
+                    $(modalSelector).modal('show');
+                    return true;
+                }
+            });
+        }
+    });
 };
