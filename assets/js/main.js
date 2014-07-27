@@ -19,6 +19,12 @@ $(function() {
         });
     });
 
+    // Clear input and textareas on close of compose window 
+    $('.modal#composemessage').on('hidden.bs.modal', function () {
+        $('.modal#composemessage input#recipients').tagsinput('removeAll');
+        $('.modal#composemessage textarea').html('');
+    });
+
     /* Load settings (synchronously) out of the settings.json file */
 
     var settingsFile = '../../settings.json';
