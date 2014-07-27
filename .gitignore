@@ -5,6 +5,7 @@ node_modules
 bower_components
 
 assets/css/style.css
+assets/css/_bootstrap-tagsinput.scss
 assets/js/build.js
 assets/fonts
 
