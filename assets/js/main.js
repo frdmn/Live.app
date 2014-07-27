@@ -100,7 +100,15 @@ $(function() {
 
                 // Add click() function to open #composemessage modal
                 $('.pseudobutton').click(function(e) {
-                    renderModal('recipients');
+                    recipientsList = [];
+                    recipientObject = {};
+
+                    recipientObject.gamertag = $(this).data('gamertag');
+                    recipientObject.xuid = $(this).data('xuid');
+
+                    recipientsList.push(recipientObject);
+
+                    renderModal(recipientsList);
                 });
             });
 
