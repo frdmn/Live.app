@@ -83,6 +83,18 @@
     border: none;
 }
 
+.sidebar-avatar {
+    width: 32px;
+    width: 32px;
+    display: inline-block;
+    margin-right: 5px;
+
+    img {
+        max-width: 100%;
+        border-radius: 50%;
+    }
+}
+
 .content-header {
     height: 65px;
     line-height: 65px;

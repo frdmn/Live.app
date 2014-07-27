@@ -101,7 +101,9 @@ $(function() {
                     $('.friendlist').append('\
 <li>\
     <button class="pseudobutton open-modal">\
-        <div class="bubble"></div> \
+        <span class="sidebar-avatar">\
+            <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
+        </span>\
         ' + v.GameDisplayName + '\
     </button>\
 </li>');
