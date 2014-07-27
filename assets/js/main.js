@@ -1,33 +1,22 @@
 $(function() {
     /* Sidebar toggle */ 
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("active");
     });
 
-    /* Modal */ 
+    /* Modal stuff */
 
-    // Open modal
-    $(".open-modal").click(function() {
-        $(".modal").addClass("modal--open");
-    });
-
-    // Close modal
-    $(".close-modal").click(function() {
-        $(".modal").removeClass("modal--open");
-        $.bootstrapGrowl('No data to show. Refresh to show settings modal again in three seconds.', { type: 'info' });
-        setTimeout(function() {
-            location.reload();
-        }, 3000);
-    });
-
-    // Listen on ESC to close modal
-    $(document).keyup(function (e) {
-        if (e.which == 27) {
-            if ($(".modal").hasClass("modal--open")) {
-                $(".modal").removeClass("modal--open");
+    // Reload if initial settings modal gets closed without success
+    $('.modal#settings').on('hidden.bs.modal', function () {
+        // Check for existing settings in PouchDB
+        retrieveDbData('settings', function(data){
+            // Reload, if no settings in database to show settings modal again
+            if (!data) {
+                location.reload();
             }
-        }
+        });
     });
 
     /* Load settings (synchronously) out of the settings.json file */
@@ -48,13 +37,13 @@ $(function() {
         // If no existing settings db open modal to gather user input,
         // otherwise continue page rendering
         if (!data) {
-            $(".modal").addClass("modal--open");
+            $('.modal#settings').modal('show');
 
             // Submit API key on submit
             $('.submit-button').click(function (){
                 $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
                 $(this).attr("disabled", true);
-                $(".modal input").prop('disabled', true);
+                $(".modal#settings input").prop('disabled', true);
 
                 settingsData = {};
                 settingsData.apiKey = $('.modal input').val();
@@ -66,8 +55,8 @@ $(function() {
                     // otherwise execute function to save settings
                     if (!data) {
                         $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
-                        $('.submit-button').attr("disabled", false);
-                        $(".modal input").prop('disabled', false);
+                        $('.modal#settings .submit-button').attr("disabled", false);
+                        $(".modal#settings input").prop('disabled', false);
                     } else {
 
                         settingsData.xuid = data.xuid;
