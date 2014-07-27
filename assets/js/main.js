@@ -42,14 +42,14 @@ $(function() {
         async: false
     });
 
-    console.log('API key: ' + settings.apiKey);
-
     /* Load settings out of the database */
 
     var getDBsettings = function (cb) {
         var pouchdb = new PouchDB('settings');
         pouchdb.get('settings', function(err, doc) {
-            if (err) {console.log(err);}
+            if (err) {
+                //console.log(err);
+            }
             if (!doc) { 
                 $.bootstrapGrowl('No API key found. Please enter in the settings modal.', { type: 'info' });
                 cb(false);
@@ -64,7 +64,9 @@ $(function() {
     var getSettings = function (cb) {
         var pouchdb = new PouchDB('settings');
         pouchdb.get('settings', function(err, doc) {
-            if (err) {console.log(err);}
+            if (err) {
+                //console.log(err);
+            }
             if (!doc) { 
                 $.bootstrapGrowl('No API key found. Please enter in the settings modal.', { type: 'info' });
                 cb(false);
@@ -80,12 +82,14 @@ $(function() {
         var apiKey = $('.modal input').val();
 
         // Function to save settings in DB */
-        var saveSetting = function(cb) {
+        var saveSetting = function(data, cb) {
             // PouchDB init
             var pouchdb = new PouchDB('settings');
 
             var settingsData = {};
             settingsData.apiKey = apiKey;
+            settingsData.xuid = data.xuid;
+            settingsData.gamerTag = data.gamerTag;
 
             // Get existing results
             pouchdb.get('settings', function(err, otherDoc) {
@@ -134,7 +138,7 @@ $(function() {
             // Data in callback => save in PouchDB and reload page 
             } else {
                 // Execute function to save settings
-                saveSetting(function (cb){
+                saveSetting(data, function (cb){
                     if (cb){
                         $.bootstrapGrowl('Valic API key! Successfully saved', { type: 'success' });
                         setTimeout(function() {
@@ -148,7 +152,7 @@ $(function() {
 
     /* API call function */
 
-    var apiCall = function (endpoint, cache, callback) {
+    var apiCall = function (apiKey, endpoint, cache, callback) {
         // PouchDB init
         var pouchdb = new PouchDB(endpoint),
             pouchrows;
@@ -160,7 +164,7 @@ $(function() {
             // If no result or caching value exceeded => call API directly
             if (!response || ((timestampNow - response.timestamp) / 1000 >= cache)) {
                 console.log('[INFO] API call "' + endpoint + '" started');
-                retrieveApiData(function(data) {
+                retrieveApiData(apiKey, function(data) {
                     // Get existing results
                     pouchdb.get('apiData', function(err, otherDoc) {
                         // If no exisiting results, put without revision
@@ -196,37 +200,38 @@ $(function() {
 
         /* Retrieve direct API data function */
         
-        var retrieveApiData = function(cb) {
-            getDBsettings(function (DBsettings){
-                $.ajaxSetup({
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-AUTH', DBsettings.settings.apiKey);
-                    }
-                });
+        var retrieveApiData = function(apiKey, cb) {
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-AUTH', apiKey);
+                }
+            });
 
-                $.get('https://xboxapi.com/v2'+endpoint, function (data) {
-                    cb(data);
-                    $.bootstrapGrowl('API call successful :)', { type: 'success' });
-                }).fail(function() {
-                    // Send notification
-                    $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
-                });
-            }); 
+            $.get('https://xboxapi.com/v2'+endpoint, function (data) {
+                cb(data);
+                $.bootstrapGrowl('API call successful :)', { type: 'success' });
+            }).fail(function() {
+                // Send notification
+                $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
+            });
+            //@TODO
         };
 
         /* Retrieve DB data function */
 
         var retrieveDbData = function (cb) {
             pouchdb.get('apiData', function(err, doc) {
-                if (err) {console.log(err);}
+                if (err) {
+                    //console.log(err);
+                }
                 cb(doc.apiData);
             });
         };
     };
 
     // Check for existing settings in PouchDB
-
     getSettings(function(data){
+        // No no settings => show initial settings modal
         if (!data) {
             $(".modal").addClass("modal--open");
 
@@ -236,52 +241,57 @@ $(function() {
                 $(".modal input").prop('disabled', true);
                 setSettings();
             });
+        // Otherwise proceed with API calls
         } else {
-            // Test call to render the friends in the sidebar
-            apiCall('/' + settings.xuid + '/friends', settings.cache.friends, function(data){
-                var friends = data;
-                // Remove loading element
-                $('.friendlist').html('');
-                // Add button for each friend
-                $(friends).each(function(k,v) {
-                    $('.friendlist').append('\
-<li>\
-    <button class="pseudobutton open-modal">\
-        <div class="bubble"></div> \
-        ' + v.GameDisplayName + '\
-    </button>\
-</li>');
-                });
-            });
+            getDBsettings(function (DBsettings){
+                console.log('[INFO] API key: ' + DBsettings.settings.apiKey);
 
-            // Test call to render messages
-            apiCall('/messages', settings.cache.messages, function(data){
-                var messages = data;
-                var i = 0;
-                // Clear timeline
-                $('.timeline').html('');
-                // Add button for each friend
-                $(messages).each(function(k,v) {
-                    var liClass ='';
-                    if(i%2 === 0){
-                        liClass='class="timeline-inverted"';
-                    }
-                    if (v.header.hasText) {
-                        i++;
-                        $('.timeline').append('\
-<li ' + liClass + '>\
-  <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
-  <div class="timeline-panel">\
-    <div class="timeline-heading">\
-      <h4 class="timeline-title"><div class="bubble bubble--online"></div> ' + v.header.sender + '</h4>\
-      <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + v.header.sent + '</small></p>\
-    </div>\
-    <div class="timeline-body">\
-      <p>' + v.messageSummary + '</p>\
-    </div>\
-  </div>\
-</li>');
-                    }
+                // Test call to render the friends in the sidebar
+                apiCall(DBsettings.settings.apiKey, '/' + DBsettings.settings.xuid + '/friends', settings.cache.friends, function(data){
+                    var friends = data;
+                    // Remove loading element
+                    $('.friendlist').html('');
+                    // Add button for each friend
+                    $(friends).each(function(k,v) {
+                        $('.friendlist').append('\
+    <li>\
+        <button class="pseudobutton open-modal">\
+            <div class="bubble"></div> \
+            ' + v.GameDisplayName + '\
+        </button>\
+    </li>');
+                    });
+                });
+
+                // Test call to render messages
+                apiCall(DBsettings.settings.apiKey, '/messages', settings.cache.messages, function(data){
+                    var messages = data;
+                    var i = 0;
+                    // Clear timeline
+                    $('.timeline').html('');
+                    // Add button for each friend
+                    $(messages).each(function(k,v) {
+                        var liClass ='';
+                        if(i%2 === 0){
+                            liClass='class="timeline-inverted"';
+                        }
+                        if (v.header.hasText) {
+                            i++;
+                            $('.timeline').append('\
+    <li ' + liClass + '>\
+      <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>\
+      <div class="timeline-panel">\
+        <div class="timeline-heading">\
+          <h4 class="timeline-title"><div class="bubble bubble--online"></div> ' + v.header.sender + '</h4>\
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + v.header.sent + '</small></p>\
+        </div>\
+        <div class="timeline-body">\
+          <p>' + v.messageSummary + '</p>\
+        </div>\
+      </div>\
+    </li>');
+                        }
+                    });
                 });
             });
         }
