@@ -65,7 +65,7 @@ $(function() {
         var apiKey = $('.modal input').val();
 
         // Function to save settings in DB */
-        var saveSetting = function() {
+        var saveSetting = function(cb) {
             // PouchDB init
             var pouchdb = new PouchDB('settings');
 
@@ -80,12 +80,14 @@ $(function() {
                         settings: settingsData,
                         timestamp: $.now()
                     }, 'settings');
+                    cb(true);
                 // Otherwise put with revision of outdated results
                 } else {
                     pouchdb.put({
                         settings: settingsData,
                         timestamp: $.now()
                     }, 'settings', otherDoc._rev);
+                    cb(true);
                 }
             });
         };
@@ -117,11 +119,13 @@ $(function() {
             // Data in callback => save in PouchDB and reload page 
             } else {
                 // Execute function to save settings
-                saveSetting(function (){
-                    $.bootstrapGrowl('Valic API key! Successfully saved', { type: 'success' });
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
+                saveSetting(function (cb){
+                    if (cb){
+                        $.bootstrapGrowl('Valic API key! Successfully saved', { type: 'success' });
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);                        
+                    }
                 });
             }
         });
