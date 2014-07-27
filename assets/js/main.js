@@ -42,23 +42,6 @@ $(function() {
         async: false
     });
 
-    /* Load settings out of the database */
-
-    var getDBsettings = function (cb) {
-        var pouchdb = new PouchDB('settings');
-        pouchdb.get('settings', function(err, doc) {
-            if (err) {
-                //console.log(err);
-            }
-            if (!doc) { 
-                $.bootstrapGrowl('No API key found. Please enter in the settings modal.', { type: 'info' });
-                cb(false);
-            } else {
-                cb(doc);
-            }
-        });
-    };
-
     /* Function to check for settings DB */
 
     var getSettings = function (cb) {
@@ -249,7 +232,7 @@ $(function() {
             });
         // Otherwise proceed with API calls
         } else {
-            getDBsettings(function (DBsettings){
+            getSettings(function (DBsettings){
                 console.log('[INFO] API key: ' + DBsettings.settings.apiKey);
 
                 // Test call to render the friends in the sidebar
