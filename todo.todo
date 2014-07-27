@@ -3,7 +3,8 @@ General todos:
   ☐ Start with the message form modal
   ✔ A bit more information in the initial settings UI @done (14-07-27 01:49)
   ☐ Add a favicon / logo
-  ☐ Store xuid and Gamertag in PouchDB as well
+  ✔ Store xuid and Gamertag in PouchDB as well @done (14-07-27 12:12)
+  ☐ Code cleanup @started(14-07-27 15:59) 
 
 Specific / new features:
   ☐ Actually implement Handlebars.js
