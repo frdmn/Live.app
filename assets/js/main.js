@@ -59,11 +59,12 @@ $(function() {
         });
     };
 
-    /* Function to save settings in DB */
+    /* Functions for the initial settings modal */
     
     var setSettings = function () {
         var apiKey = $('.modal input').val();
 
+        // Function to save settings in DB */
         var saveSetting = function() {
             // PouchDB init
             var pouchdb = new PouchDB('settings');
@@ -209,6 +210,7 @@ $(function() {
             $(".modal").addClass("modal--open");
 
             $('.submit-button').click(function (){
+                $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
                 $(this).attr("disabled", true);
                 $(".modal input").prop('disabled', true);
                 setSettings();
