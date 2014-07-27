@@ -163,29 +163,37 @@ $(function() {
 
             // If no result or caching value exceeded => call API directly
             if (!response || ((timestampNow - response.timestamp) / 1000 >= cache)) {
+                if (response && ((timestampNow - response.timestamp) / 1000 >= cache)) {
+                    console.log('[INFO] Cache expired for "' + endpoint + ': ' + ((timestampNow - response.timestamp) / 1000) + ' ms > ' + cache);
+                }
+
                 console.log('[INFO] API call "' + endpoint + '" started');
                 retrieveApiData(apiKey, function(data) {
-                    // Get existing results
-                    pouchdb.get('apiData', function(err, otherDoc) {
-                        // If no exisiting results, put without revision
-                        if (!otherDoc) {
-                            pouchdb.put({
-                                apiData: data,
-                                timestamp: $.now()
-                            }, 'apiData');
-                        // Otherwise put with revision of outdated results
-                        } else {
-                            pouchdb.put({
-                                apiData: data,
-                                timestamp: $.now()
-                            }, 'apiData', otherDoc._rev);
-                        }
-                    });
+                    if (!data) {
+                        console.log('[WARN] Couldn\'t finish API call "' + endpoint + '"!');
+                    } else {
+                        // Get existing results
+                        pouchdb.get('apiData', function(err, otherDoc) {
+                            // If no exisiting results, put without revision
+                            if (!otherDoc) {
+                                pouchdb.put({
+                                    apiData: data,
+                                    timestamp: $.now()
+                                }, 'apiData');
+                            // Otherwise put with revision of outdated results
+                            } else {
+                                pouchdb.put({
+                                    apiData: data,
+                                    timestamp: $.now()
+                                }, 'apiData', otherDoc._rev);
+                            }
+                        });
 
-                    // Send callback
-                    callback(data);
+                        // Send callback
+                        callback(data);
 
-                    console.log('[INFO] API call "' + endpoint + '" finished');
+                        console.log('[INFO] API call "' + endpoint + '" finished');
+                    }
                 });
             // Otherwise return cached API results out of PouchDB
             } else {
@@ -209,10 +217,8 @@ $(function() {
 
             $.get('https://xboxapi.com/v2'+endpoint, function (data) {
                 cb(data);
-                $.bootstrapGrowl('API call successful :)', { type: 'success' });
             }).fail(function() {
-                // Send notification
-                $.bootstrapGrowl('Couldn\'t connect to API :(', { type: 'danger' });
+                cb(false);
             });
             //@TODO
         };
