@@ -129,7 +129,7 @@ $(function() {
   <div class="timeline-badge"><img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.header.sender) + '/avatarpic-l.png"></div>\
   <div class="timeline-panel">\
     <div class="timeline-heading">\
-      <h4 class="timeline-title"><div class="bubble bubble--online"></div> ' + v.header.sender + '</h4>\
+      <h4 class="timeline-title">' + v.header.sender + '</h4>\
       <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + v.header.sent + '</small></p>\
     </div>\
     <div class="timeline-body">\
