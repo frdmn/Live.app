@@ -7,7 +7,7 @@ $z-index-bootstrap-growl: 1000000;
 
 // Imports
 @import 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap';
-@import 'chosen';
+@import 'bower_components/chosen-bootstrap/bootstrap-chosen';
 
 @import 'main';
 @import 'sidebar';

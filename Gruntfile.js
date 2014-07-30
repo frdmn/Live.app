@@ -126,7 +126,8 @@ module.exports = function(grunt) {
           main: {
             files: [
               {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
-              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen.css'], dest: '<%= dirs.css %>'}            
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen.css'], dest: '<%= dirs.css %>'},            
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'}            
             ]
           }
         },
