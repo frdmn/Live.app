@@ -241,11 +241,27 @@ var renderModal = function(recipientsList, messagebody){
     });
 };
 
+/* Function to list all local PouchDBs using all-db's plugin */
+
 var listPouchDBs = function(callback){
     PouchDB.allDbs().then(function (dbs) {
       callback(dbs);
     }).catch(function (err) {
       console.log(err);
       callback(false);
+    });
+};
+
+/* Function to delete a database */
+ 
+var deletePouchDB = function(database, callback){
+    var pouchdb = new PouchDB(database);
+    pouchdb.destroy(function(err, info) {
+        if (!err){
+            console.log(info);
+            callback(true);
+        } else {
+            callback(false);
+        }
     });
 };
