@@ -5,8 +5,11 @@ node_modules
 bower_components
 
 assets/css/style.css
-assets/css/_chosen.scss
 assets/js/build.js
 assets/fonts
 
 settings.json
+
+assets/css/_chosen.scss
+assets/css/chosen-sprite.png
+assets/css/chosen-sprite@2x.png
