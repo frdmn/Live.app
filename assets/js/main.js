@@ -1,13 +1,28 @@
 $(function() {
     /* Clear local dbs */
   
-    $(".sidebar-clearlocaldb").click(function(e) {
+    $(".clearlocaldb-submit").click(function(e) {
+        // Disable login button to prevent duplicate submits
+        $(this).attr("disabled", "disabled");
+
+        // Execute listPouchDBs
         listPouchDBs(function(data){
+            // For each database, execute function to delete
             $(data).each(function(k,v){
                 deletePouchDB(v, function(callback){
-                    console.log(callback);
+                    if (callback) {
+                        console.log('[INFO] destroyed local database "' + v + '"');
+                    } else {
+                        console.log('[ERROR] Couldn\'t destroy local database "' + v + '"');
+                    }
                 });
             });
+         
+            // Initiate refresh, to show first start modal again
+            console.log('[INFO] Refresh in 1.5 seconds');
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
         });
     });
 

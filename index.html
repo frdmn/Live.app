@@ -15,7 +15,7 @@
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <h1>Live.app</h1>
-                <span class="sidebar-clearlocaldb"><a href="#" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></span>
+                <span class="sidebar-clearlocaldb"><a href="#" class="btn btn-default" data-toggle="modal" data-target="#clearlocaldb"><span class="glyphicon glyphicon-trash"></span></a></span>
 
                 <ul class="sidebar-nav friendlist">
                     <li>
@@ -107,6 +107,26 @@
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary submit-button">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="clearlocaldb" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure to remove all databases?</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <p>This will include the client side settings like your XboxLive.com API key and of course the actual caching databases for each API endpoint.</p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary submit-button clearlocaldb-submit">Delete</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
