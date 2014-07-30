@@ -258,9 +258,9 @@ var deletePouchDB = function(database, callback){
     var pouchdb = new PouchDB(database);
     pouchdb.destroy(function(err, info) {
         if (!err){
-            console.log(info);
             callback(true);
         } else {
+            console.log(err);
             callback(false);
         }
     });
