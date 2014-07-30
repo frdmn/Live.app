@@ -125,7 +125,7 @@ module.exports = function(grunt) {
           main: {
             files: [
               {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
-              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-tagsinput/dist/', src: ['bootstrap-tagsinput.css'], dest: '<%= dirs.css %>'}            
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen.css'], dest: '<%= dirs.css %>'}            
             ]
           }
         },
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
         rename: {
           main: {
             files: [
-                  {src: ['<%= dirs.css %>/bootstrap-tagsinput.css'], dest: '<%= dirs.css %>/_bootstrap-tagsinput.scss'},
+                  {src: ['<%= dirs.css %>/chosen.css'], dest: '<%= dirs.css %>/_chosen.scss'},
                 ]
           }
         },

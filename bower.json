@@ -22,6 +22,7 @@
     "blockui": "*",
     "bootstrap-growl": "~1.1.0",
     "pouchdb": "~2.2.3",
-    "typeahead.js": "~0.10.4"
+    "typeahead.js": "~0.10.4",
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip"
   }
 }
