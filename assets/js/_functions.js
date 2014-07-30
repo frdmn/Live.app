@@ -115,6 +115,30 @@ var retrieveDbData = function (endpoint, callback) {
     });
 };
 
+/* Sumbit API data function */
+
+var submitApiData = function (apikey, endpoint, content, callback) {
+    // Test API key
+    apikey = "ABC123";
+
+    // Prepare ajax request
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            // Add X-AUTH header
+            xhr.setRequestHeader('X-AUTH', apikey);
+        }
+    });
+
+    // Fire POST
+    $.post('https://xboxapi.com/v2'+endpoint, content, function (data) {
+        callback(data);
+        console.log(data);
+    // In case of any error, return false
+    }).fail(function() {
+        callback(false);
+    });
+};
+
 /* Submit DB data function */
 
 var submitDbData = function (input, endpoint, callback) {
@@ -205,8 +229,10 @@ var renderModal = function(recipientsList, messagebody){
                     // Update in case chosen instance is already initiated
                     $(recipientsSelector).trigger("chosen:updated");
 
-                    $(modalSelector).modal('show');
-                    return true;
+                    submitApiData('/messages', {recipients: ['2535470525950774'], message: "test"}, function(callback){
+                        $(modalSelector).modal('show');
+                        return true;
+                    });
                 }
             });
         }
