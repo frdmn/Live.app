@@ -131,15 +131,6 @@ module.exports = function(grunt) {
           }
         },
 
-
-        // Rename/move
-        rename: {
-          main: {
-            files: [                ]
-          }
-        },
-
-
         // Watch
         watch: {
             options: {
@@ -167,6 +158,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['copy', 'rename', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
-    grunt.registerTask('dev', ['copy', 'rename', 'connect', 'watch']);
+    grunt.registerTask('default', ['copy', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
+    grunt.registerTask('dev', ['copy', 'connect', 'watch']);
 };
