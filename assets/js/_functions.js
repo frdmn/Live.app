@@ -117,7 +117,7 @@ var retrieveDbData = function (endpoint, callback) {
 
 /* Sumbit API data function */
 
-var submitApiData = function (apikey, endpoint, content, callback) {
+var submitApiData = function (endpoint, content, callback) {
     // Test API key
     apikey = "ABC123";
 
