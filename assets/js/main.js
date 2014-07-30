@@ -21,8 +21,9 @@ $(function() {
 
     // Clear input and textareas on close of compose window 
     $('.modal#composemessage').on('hidden.bs.modal', function () {
-        $('.modal#composemessage input#recipients').tagsinput('removeAll');
         $('.modal#composemessage textarea').html('');
+        $('.modal#composemessage select.chosen-recipients').empty();
+        $('.modal#composemessage select.chosen-recipients').trigger("chosen:updated");
     });
 
     /* Load settings (synchronously) out of the settings.json file */

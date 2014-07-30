@@ -158,52 +158,53 @@ var submitDbData = function (input, endpoint, callback) {
 /* Function to open modal */ 
 
 var renderModal = function(recipientsList, messagebody){
-
-    var recipientsSelector = '.modal#composemessage input#recipients';
+    // Selector helpers
+    var recipientsSelector = '.modal#composemessage select.chosen-recipients';
     var messageSelector = '.modal#composemessage textarea#messagebody';
     var modalSelector = '.modal#composemessage';
 
-    $(recipientsSelector).tagsinput({
-      itemValue: 'xuid',
-      itemText: 'gamertag'
-    });
-
-    $(recipientsList).each(function(k, v){
-        $(recipientsSelector).tagsinput('add', { "xuid": v.xuid , "gamertag": v.gamertag });
-    });
-
+    // If message body, prefill
     if (messagebody) {
         $(messageSelector).html(messagebody);
     }
 
+    // Get our personal xUid out of settins DB
     retrieveDbData('settings', function(data){
         if (data) {
             var myXuid = data.xuid;
 
+            // Now get all friends out of PouchDB
             retrieveDbData('/' + myXuid + '/friends', function(data){
                 if (data) {
-                    var friendsList = [];
+                    // Variable initalization
+                    var friendsList = [],
+                        i = 0;
 
+                    // Store each friend in a object to parse easier
                     $(data.jsonData).each(function(k,v){
                         var friendObject = {};
+                        friendObject.id = i;
                         friendObject.xuid = v.id;
                         friendObject.gamertag = v.Gamertag;
                         friendsList.push(friendObject);
+                        i++;
                     });
 
-                    console.log(JSON.stringify(friendsList));
+                    // Add all friends to Chosen select
+                    $(friendsList).each(function(k,v){
+                        $(recipientsSelector).append('<option value="' + v.xuid + '">' + v.gamertag + '</option>');
+                    });
 
-                    $(recipientsSelector).tagsinput('input').typeahead({
-                        hint: true,
-                    },{
-                        displayKey: 'xuid',
-                        source: friendsList,
-                        template: '<p>{{gamertag}}</p>'
-                    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-                          this.tagsinput('add', datum.value);
-                          this.tagsinput('input').typeahead('val', '');
-                    }, $(recipientsSelector)));
+                    // Preselect the recipient
+                    $(recipientsList).each(function(k, v){
+                        $(recipientsSelector + ' option[value="' + v.xuid + '"]').attr('selected',true);
+                    });
                     
+                    // Init the chosen select and show the modal
+                    $(recipientsSelector).chosen({ width:"100%" });
+                    // Update in case chosen instance is already initiated
+                    $(recipientsSelector).trigger("chosen:updated");
+
                     $(modalSelector).modal('show');
                     return true;
                 }
