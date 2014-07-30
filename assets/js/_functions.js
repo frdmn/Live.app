@@ -238,3 +238,12 @@ var renderModal = function(recipientsList, messagebody){
         }
     });
 };
+
+var listPouchDBs = function(callback){
+    PouchDB.allDbs().then(function (dbs) {
+      callback(dbs);
+    }).catch(function (err) {
+      console.log(err);
+      callback(false);
+    });
+};
