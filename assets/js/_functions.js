@@ -229,10 +229,12 @@ var renderModal = function(recipientsList, messagebody){
                     // Update in case chosen instance is already initiated
                     $(recipientsSelector).trigger("chosen:updated");
 
-                    submitApiData('/messages', {recipients: ['2535470525950774'], message: "test"}, function(callback){
-                        $(modalSelector).modal('show');
-                        return true;
-                    });
+                    // submitApiData('/messages', {recipients: ['2535470525950774'], message: "test"}, function(callback){
+                    //     $(modalSelector).modal('show');
+                    //     return true;
+                    // });
+                    $(modalSelector).modal('show');
+                    return true;
                 }
             });
         }
