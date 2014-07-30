@@ -22,7 +22,6 @@
     "blockui": "*",
     "bootstrap-growl": "~1.1.0",
     "pouchdb": "~2.2.3",
-    "bootstrap-tagsinput": "~0.3.14",
     "typeahead.js": "~0.10.4"
   }
 }
