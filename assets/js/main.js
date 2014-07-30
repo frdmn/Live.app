@@ -1,13 +1,21 @@
 $(function() {
+    /* Clear local dbs */
+  
+    $(".sidebar-clearlocaldb").click(function(e) {
+        listPouchDBs(function(data){
+            $(data).each(function(k,v){
+                deletePouchDB(v, function(callback){
+                    console.log(callback);
+                });
+            });
+        });
+    });
+
     /* Sidebar toggle */ 
 
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("active");
-
-        // listPouchDBs(function(data){
-        //     console.log(data);
-        // });
     });
 
     /* Modal stuff */
