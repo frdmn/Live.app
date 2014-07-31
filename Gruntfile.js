@@ -8,7 +8,8 @@ module.exports = function(grunt) {
             css: 'assets/css',
             js: 'assets/js',
             images: 'assets/images',
-            fonts: 'assets/fonts'
+            fonts: 'assets/fonts',
+            svg: 'assets/svg'
         },
 
         // SCSS
@@ -127,7 +128,8 @@ module.exports = function(grunt) {
           main: {
             files: [
               {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
-              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'}            
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'},            
+              {expand: true, cwd: '<%= dirs.bower %>/svg-spinners/', src: ['loading-*.svg'], dest: '<%= dirs.svg %>'}            
             ]
           }
         },

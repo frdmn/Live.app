@@ -25,6 +25,7 @@
     "typeahead.js": "~0.10.4",
     "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
     "chosen-bootstrap": "https://github.com/alxlit/bootstrap-chosen/archive/master.zip",
-    "pouchdb-all-dbs": "~0.1.5"
+    "pouchdb-all-dbs": "~0.1.5",
+    "svg-spinners": "*"
   }
 }
