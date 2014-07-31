@@ -74,7 +74,7 @@ $(function() {
             $('.modal#settings').modal('show');
 
             // Submit API key on submit
-            $('.submit-button').click(function (){
+            $('.modal#settings .submit-button').click(function (){
                 $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
                 $(this).attr("disabled", true);
                 $(".modal#settings input").prop('disabled', true);
