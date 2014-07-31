@@ -265,3 +265,13 @@ var deletePouchDB = function(database, callback){
         }
     });
 };
+
+/* Function to show spinner */
+ 
+var showLoadingSpinner = function() {
+    $('.icon-loading').show();
+};
+
+var hideLoadingSpinner = function() {
+    $('.icon-loading').hide();
+};
