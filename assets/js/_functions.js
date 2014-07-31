@@ -37,14 +37,14 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                 console.log('[INFO] Cache expired for "' + endpoint + ': ' + dataExpiredCondition + ' ms > ' + cache);
             }
 
-            console.log('[INFO] API call "' + endpoint + '" started');
+            console.log('[INFO] API call "GET ' + endpoint + '" started');
 
             // Execute retrieve function
             retrieveApiData(apiKey, endpoint, function(data) {
                 // In case of server side API error, return false
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
-                    console.log('[WARN] Couldn\'t finish API call "' + endpoint + '"!');
+                    console.log('[WARN] Couldn\'t finish API call "GET ' + endpoint + '"!');
                     // Hide loading spinner again
                     hideLoadingSpinner();                          
                     callback(false);
@@ -128,9 +128,8 @@ var retrieveDbData = function (endpoint, callback) {
 
 /* Sumbit API data function */
 
-var submitApiData = function (endpoint, content, callback) {
-    // Test API key
-    apikey = "ABC123";
+var submitApiData = function (apikey, endpoint, content, callback) {
+    console.log('[INFO] API call "POST ' + endpoint + '" started');
 
     // Prepare ajax request
     $.ajaxSetup({
@@ -142,8 +141,9 @@ var submitApiData = function (endpoint, content, callback) {
 
     // Fire POST
     $.post('https://xboxapi.com/v2'+endpoint, content, function (data) {
-        callback(data);
         console.log(data);
+        console.log('[INFO] API call "POST ' + endpoint + '" successfully finished');
+        callback(data);
     // In case of any error, return false
     }).fail(function() {
         callback(false);
@@ -240,10 +240,6 @@ var renderModal = function(recipientsList, messagebody){
                     // Update in case chosen instance is already initiated
                     $(recipientsSelector).trigger("chosen:updated");
 
-                    // submitApiData('/messages', {recipients: ['2535470525950774'], message: "test"}, function(callback){
-                    //     $(modalSelector).modal('show');
-                    //     return true;
-                    // });
                     $(modalSelector).modal('show');
                     return true;
                 }
@@ -277,7 +273,7 @@ var deletePouchDB = function(database, callback){
     });
 };
 
-/* Function to show spinner */
+/* Function to show/hide spinner */
  
 var showLoadingSpinner = function() {
     $('.icon-loading').show();
@@ -287,4 +283,21 @@ var showLoadingSpinner = function() {
 var hideLoadingSpinner = function() {
     $('.icon-loading').hide();
     $('html').removeClass('wait-cursor');
+};
+
+/* Function to send message */
+
+var sendMessage = function(apikey, recipients, message, callback){
+    var jsonObject = {};
+
+    jsonObject.recipients = recipients;
+    jsonObject.message = message;
+
+    submitApiData(apikey, '/messages', jsonObject, function(data){
+        if (!data) {
+            callback(false);
+        } else {
+            callback(true);
+        }
+    });
 };

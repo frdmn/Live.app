@@ -1,31 +1,4 @@
 $(function() {
-    /* Clear local dbs */
-  
-    $(".clearlocaldb-submit").click(function(e) {
-        // Disable login button to prevent duplicate submits
-        $(this).attr("disabled", "disabled");
-
-        // Execute listPouchDBs
-        listPouchDBs(function(data){
-            // For each database, execute function to delete
-            $(data).each(function(k,v){
-                deletePouchDB(v, function(callback){
-                    if (callback) {
-                        console.log('[INFO] destroyed local database "' + v + '"');
-                    } else {
-                        console.log('[ERROR] Couldn\'t destroy local database "' + v + '"');
-                    }
-                });
-            });
-         
-            // Initiate refresh, to show first start modal again
-            console.log('[INFO] Refresh in 1.5 seconds');
-            setTimeout(function(){
-                location.reload();
-            }, 1500);
-        });
-    });
-
     /* Sidebar toggle */ 
 
     $("#menu-toggle").click(function(e) {
@@ -63,6 +36,33 @@ $(function() {
         dataType: 'json',
         success: function(data) { settings = data;},
         async: false
+    });
+
+    /* Execute function to clear local DBs */
+  
+    $(".clearlocaldb-submit").click(function(e) {
+        // Disable login button to prevent duplicate submits
+        $(this).attr("disabled", "disabled");
+
+        // Execute listPouchDBs
+        listPouchDBs(function(data){
+            // For each database, execute function to delete
+            $(data).each(function(k,v){
+                deletePouchDB(v, function(callback){
+                    if (callback) {
+                        console.log('[INFO] Destroyed local database "' + v + '"');
+                    } else {
+                        console.log('[ERROR] Couldn\'t destroy local database "' + v + '"');
+                    }
+                });
+            });
+         
+            // Initiate refresh, to show first start modal again
+            console.log('[INFO] Refresh in 1.5 seconds');
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
+        });
     });
 
     // Check for existing settings in PouchDB
@@ -113,6 +113,38 @@ $(function() {
             });
         } else {
             console.log('[INFO] API key: ' + data.apiKey);
+
+            /* Execute function to send message on submit */
+    
+            $('.modal#composemessage .submit-button').click(function(e) {
+                // Disable login button to prevent duplicate submits
+                $(this).attr("disabled", "disabled");
+
+                // Selector helpers and temporary objects
+                var recipientsSelector = '.modal#composemessage select.chosen-recipients',
+                    messageSelector = '.modal#composemessage textarea',
+                    recipientsObject = [],
+                    messageObject;
+
+                $(recipientsSelector+' option:selected').each(function(){
+                    recipientsObject.push($(this).val());
+                });
+
+                messageObject = $(messageSelector).val();
+
+                // Try to send message
+                sendMessage(data.apiKey, recipientsObject, messageObject, function(data){
+                    if (!data) {
+                        $(this).attr("disabled", "enabled");
+                        $.bootstrapGrowl('Error while sending message :(', { type: 'danger' });
+                        console.log("[ERROR] Couldn't send message - ", recipients, message);
+                    } else {
+                        $(this).attr("disabled", "enabled");
+                        $.bootstrapGrowl('Message successfully sent!', { type: 'success' });
+                        console.log("[INFO] Message successfully sent!", recipients, message);
+                    }
+                });
+            });
 
             // Test call to render the friends in the sidebar
             apiCall(data.apiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
