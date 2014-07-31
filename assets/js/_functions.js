@@ -273,18 +273,6 @@ var deletePouchDB = function(database, callback){
     });
 };
 
-/* Function to show/hide spinner */
- 
-var showLoadingSpinner = function() {
-    $('.icon-loading').show();
-    $('html').addClass('wait-cursor');
-};
-
-var hideLoadingSpinner = function() {
-    $('.icon-loading').hide();
-    $('html').removeClass('wait-cursor');
-};
-
 /* Function to send message */
 
 var sendMessage = function(apikey, recipients, message, callback){
@@ -300,4 +288,16 @@ var sendMessage = function(apikey, recipients, message, callback){
             callback(true);
         }
     });
+};
+
+/* Function to show/hide spinner */
+ 
+var showLoadingSpinner = function() {
+    $('.icon-loading').show();
+    $('html').addClass('wait-cursor');
+};
+
+var hideLoadingSpinner = function() {
+    $('.icon-loading').hide();
+    $('html').removeClass('wait-cursor');
 };
