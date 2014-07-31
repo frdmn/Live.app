@@ -281,8 +281,10 @@ var deletePouchDB = function(database, callback){
  
 var showLoadingSpinner = function() {
     $('.icon-loading').show();
+    $('html').addClass('wait-cursor');
 };
 
 var hideLoadingSpinner = function() {
     $('.icon-loading').hide();
+    $('html').removeClass('wait-cursor');
 };
