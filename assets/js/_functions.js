@@ -20,6 +20,9 @@ var checkApiKey = function(input, callback) {
 /* API call function */
 
 var apiCall = function (apiKey, endpoint, cache, callback) {
+    // Show loading spinner
+    showLoadingSpinner();
+
     // Try to get the cached API results out of PouchDB
     retrieveDbData(endpoint, function(data){
         timestampNow = $.now();
@@ -42,6 +45,8 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
                     console.log('[WARN] Couldn\'t finish API call "' + endpoint + '"!');
+                    // Hide loading spinner again
+                    hideLoadingSpinner();                          
                     callback(false);
                 } else {
                     // Create new object to append a timestamp
@@ -54,10 +59,14 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                         // Return false in case of error
                         // Otherwise, send to callback 
                         if (!submitData) {
+                            // Hide loading spinner again
+                            hideLoadingSpinner();                          
                             callback(false);
                         } else {
+                            console.log('[INFO] API call "' + endpoint + '" finished');
+                            // Hide loading spinner again
+                            hideLoadingSpinner();                          
                             callback(data);
-                            console.log('[INFO] API call "' + endpoint + '" finished');                               
                         }
                     });
                 }
@@ -66,9 +75,11 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
             console.log('[INFO] DB call "' + endpoint + '" started');
             // Retrieve cached data
             retrieveDbData(endpoint, function(data){
+                console.log('[INFO] DB call "' + endpoint + '" finished');
+                // Hide loading spinner again
+                hideLoadingSpinner();                          
                 // Send callback
                 callback(data.jsonData);
-                console.log('[INFO] DB call "' + endpoint + '" finished');
             });
         }
     });
