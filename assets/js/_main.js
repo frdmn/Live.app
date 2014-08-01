@@ -90,7 +90,6 @@ $(function() {
                 settingsData = {};
                 settingsData.apiKey = $('.modal input').val();
 
-                $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
                 log.info('[INFO] Trying to connect to XboxAPI.com using the API key: "' + settingsData.apiKey + '"');
 
                 $(this).attr("disabled", true);
@@ -101,8 +100,6 @@ $(function() {
                     // If invalid API key show notification 
                     // otherwise execute function to save settings
                     if (!data) {
-                        $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
-
                         $('.modal#settings .submit-button').attr("disabled", false);
                         $(".modal#settings input").prop('disabled', false);
                     } else {
@@ -110,9 +107,7 @@ $(function() {
                         settingsData.gamerTag = data.gamerTag;
 
                         submitDbData(settingsData, 'settings', function(){
-                            if (data) {
-                                $.bootstrapGrowl('Valid API key! Successfully saved', { type: 'success' });
-                                
+                            if (data) {                              
                                 // Wait 2 seconds for the notfication, then reload to show the dashboard
                                 log.debug("[DEBUG] Wait 2 seconds, then reload");
                                 setTimeout(function() {
@@ -149,10 +144,8 @@ $(function() {
                 sendMessage(data.apiKey, recipientsObject, messageObject, function(data){
                     if (!data) {
                         $(this).attr("disabled", "enabled");
-                        $.bootstrapGrowl('Error while sending message :(', { type: 'danger' });
                     } else {
                         $(this).attr("disabled", "enabled");
-                        $.bootstrapGrowl('Message successfully sent!', { type: 'success' });
                     }
                 });
             });
