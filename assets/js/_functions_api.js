@@ -38,7 +38,7 @@ var retrieveApiData = function(apiKey, endpoint, callback) {
         callback(data);
     // In case of any error, return false
     }).fail(function() {
-        log.warn('[WARN] Couldn\'t finish API call "GET ' + endpoint + '"');
+        log.error('[ERROR] Couldn\'t finish API call "GET ' + endpoint + '". API down?');
         callback(false);
     });
 };
