@@ -11,7 +11,8 @@ module.exports = function(grunt) {
             css: 'assets/css',
             js: 'assets/js',
             images: 'assets/images',
-            fonts: 'assets/fonts'
+            fonts: 'assets/fonts',
+            svg: 'assets/svg'
         },
 
         // SCSS
@@ -67,8 +68,10 @@ module.exports = function(grunt) {
                     '<%= dirs.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
                     '<%= dirs.bower %>/handlebars/handlebars.js',
                     '<%= dirs.bower %>/blockui/jquery.blockUI.js',
-                    '<%= dirs.bower %>/bootstrap-growl/jquery.bootstrap-growl.js',
-                    '<%= dirs.bower %>/pouchdb/dist/pouchdb-nightly.min.js',
+                    '<%= dirs.bower %>/pouchdb/dist/pouchdb-nightly.js',
+                    '<%= dirs.bower %>/chosen/chosen.jquery.js',
+                    '<%= dirs.bower %>/pouchdb-all-dbs/dist/pouchdb.all-dbs.js',
+                    '<%= dirs.bower %>/loglevel/dist/loglevel.js',
                     '<%= dirs.js %>/*.js',
                     '!<%= dirs.js %>/modernizr.js',
                     '!<%= dirs.js %>/build.js'
@@ -126,7 +129,10 @@ module.exports = function(grunt) {
         copy: {
           main: {
             files: [
-              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'}            ]
+              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'},            
+              {expand: true, cwd: '<%= dirs.bower %>/svg-spinners/', src: ['loading-*.svg'], dest: '<%= dirs.svg %>'}            
+            ]
           }
         },
 
@@ -167,8 +173,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin', 'build']);
-    grunt.registerTask('dev', ['connect', 'watch']);
+    grunt.registerTask('default', ['copy', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin', 'build']);
+    grunt.registerTask('dev', ['copy', 'connect', 'watch']);
     grunt.registerTask('build', ['nodewebkit']);
 };
 

@@ -1,13 +1,22 @@
+# Meta files
 .sass-cache
 .DS_Store
 
+# Node and Bower components
 node_modules
 bower_components
 
-assets/css/style.css
-assets/js/build.js
-assets/fonts
-
+# node-webkit build folder
 build
 
+# Assets and files that we're actually compile
+assets/fonts
+assets/svg
+assets/css/style.css
+assets/js/build.js
+assets/css/_chosen.scss
+assets/css/chosen-sprite.png
+assets/css/chosen-sprite@2x.png
+
+# Settings file
 settings.json

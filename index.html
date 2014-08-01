@@ -15,14 +15,12 @@
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <h1>Live.app</h1>
-
-                <ul class="sidebar-nav friendlist">
-                    <li>
-                        <button class="pseudobutton open-modal">
-                            Loading...
-                        </button>
-                    </li>
-                </ul>
+                <ul class="sidebar-nav friendlist"></ul>
+                <div class="sidebar-bottom">
+                    <button class="pseudobutton sidebar-clearlocaldb" data-toggle="modal" data-target="#clearlocaldb">
+                        <span class="glyphicon glyphicon-trash"></span> Clear database?
+                    </button>
+                </div>
             </div>
             <!-- Page content -->
             <div id="page-content-wrapper">
@@ -30,51 +28,78 @@
                     <h1>
                         <a id="menu-toggle" href="#" class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></span></a>
                         Inbox
+                        <span class="right"><img src="assets/svg/loading-spin.svg" alt="Loading icon" class="icon-loading" /></span>
                     </h1>
                     <hr>
                 </div>
-                <ul class="timeline">
-                    <li>
-                      <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>
-                      <div class="timeline-panel">
-                        <div class="timeline-heading">
-                          <h4 class="timeline-title"><div class="bubble bubble--online"></div> Loader</h4>
-                        </div>
-                        <div class="timeline-body">
-                          <p>Loading...</p>
-                        </div>
-                      </div>
-                    </li>
-                    <!--
-                    <li class="timeline-inverted">
-                      <div class="timeline-badge"><img src="http://placekitten.com/100/100"></div>
-                      <div class="timeline-panel">
-                        <div class="timeline-heading">
-                          <h4 class="timeline-title"><div class="bubble bubble--offline"></div> rnarian</h4>
-                          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 5 hours ago</small></p>
-                        </div>
-                        <div class="timeline-body">
-                          <p>Damnit, it's full ._.</p>
-                        </div>
-                      </div>
-                    </li>-->
-                </ul>
+                <ul class="timeline"></ul>
             </div>
         </div>
-        <div class="modal">
-          <div id="page-content-wrapper">
-            <div class="form-horizontal" role="form">
-              <div class="form-group">
-                <label for="apiKey" class="col-sm-2 control-label">API key</label>
-                <div class="col-sm-8">
+        <div class="modal fade" id="settings" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">First start of Live.app</h4>
+              </div>
+              <div class="modal-body">
+                <p>It seems that this is the first start of <strong>Live.app</strong>, at least the settings database is empty or missing.You need to setup your XboxAPI.com key in order to use this web app properly. Please enter your API key below and click on "Submit". If it passes the connection check, you can start chatting with your friends!</p>
+
+                <div class="form-group">
+                  <label for="apiKey" class="control-label">API key</label>
                   <input type="text" class="form-control" id="apiKey" placeholder="XboxAPI.com API key">
+                  <p class="help-block">To use <strong>Live.app</strong> you need an valid API key from <a href="https://xboxapi.com" target="_blank">XboxAPI.com</a>. Since this is a client side application, the API key will be never sent to anyone and remain in your local browser database (IndexedDB/WebSQL).</p>
                 </div>
               </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                  <button class="btn btn-primary submit-button">Submit</button>
-                  <button class="btn btn-default close-modal close-button">Close</button>
+              <div class="modal-footer">
+                <button class="btn btn-primary submit-button">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="composemessage" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Compose message</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label class="label-recipients" for="recipients" class="control-label">Recipients</label><br>
+                  <select data-placeholder="Choose recipients..." class="chosen-recipients form-control" multiple style="width:350px;" tabindex="4">
+                    <option value=""></option>
+                  </select>
+                  <p class="help-block">You can also use multiple recipients.</p>
                 </div>
+                <div class="form-group">
+                  <label class="label-messagebody" for="messagebody" class="control-label">Message</label>
+                  <textarea class="form-control" id="messagebody" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary submit-button">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="clearlocaldb" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Are you sure to remove all databases?</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <p>This will include the client side settings like your XboxLive.com API key and of course the actual caching databases for each API endpoint.</p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary submit-button clearlocaldb-submit">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
@@ -82,6 +107,5 @@
 
         <!-- Include JavaScript -->
         <script src="assets/js/build.js"></script>
-
     </body>
 </html>

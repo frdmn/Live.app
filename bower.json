@@ -1,6 +1,6 @@
 {
   "name": "liveapp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Jonas Friedmann"
   ],
@@ -20,7 +20,14 @@
     "handlebars": "~1.3.0",
     "modernizr": "~2.8.3",
     "blockui": "*",
-    "bootstrap-growl": "~1.1.0",
-    "pouchdb": "~2.2.3"
+    "pouchdb": "~2.2.3",
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
+    "chosen-bootstrap": "https://github.com/alxlit/bootstrap-chosen/archive/master.zip",
+    "pouchdb-all-dbs": "~0.1.5",
+    "svg-spinners": "https://github.com/frdmn/loading/archive/master.zip",
+    "loglevel": "~0.6.0"
+  },
+  "resolutions": {
+    "jquery": "1.11"
   }
 }
