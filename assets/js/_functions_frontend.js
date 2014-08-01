@@ -87,3 +87,19 @@ var deletePouchDB = function(database, callback){
         }
     });
 };
+
+/* Function to show/hide spinner */
+ 
+var showLoadingSpinner = function() {
+    // Show actual spinner
+    $('.icon-loading').show();
+    // And the spinning wheel cursor
+    $('html').addClass('wait-cursor');
+};
+
+var hideLoadingSpinner = function() {
+    // Hide actual spinner
+    $('.icon-loading').hide();
+    // And the spinning wheel cursor
+    $('html').removeClass('wait-cursor');
+};
