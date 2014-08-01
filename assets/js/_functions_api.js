@@ -30,9 +30,11 @@ var retrieveApiData = function(apiKey, endpoint, callback) {
         }
     });
 
+    log.info('[INFO] API call "GET ' + endpoint + '" started');
+
     // Fire GET
     $.get('https://xboxapi.com/v2'+endpoint, function (data) {
-        log.info('[INFO] API call "GET ' + endpoint + '" started');
+        log.info('[INFO] API call "GET ' + endpoint + '" finished');
         callback(data);
     // In case of any error, return false
     }).fail(function() {
@@ -120,7 +122,7 @@ var submitDbData = function (input, endpoint, callback) {
                 }
                 // If no errors, send response to callback
                 if (response){
-                    log.info("[INFO] Settings successfully saved");
+                    log.info('[INFO] "' + endpoint + '" successfully stored in PouchDB');
                     callback(response);
                 }
             });
@@ -158,6 +160,8 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
         timestampNow = $.now();
         var dataExpiredCondition = (timestampNow - data.timestamp) / 1000,
             dataExpired = (dataExpiredCondition >= cache);
+
+        log.debug('[DEBUG] Check if cache is expired for endpoint "' + endpoint + '"');
 
         // If no result or caching value exceeded => call API directly
         // Otherwise return cached API results out of PouchDB
@@ -198,6 +202,7 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                 }
             });
         } else {
+            log.debug('[DEBUG] Cache not expired for "' + endpoint + '". Deliver cached version from PouchDB.');
             log.info('[INFO] DB call "' + endpoint + '" started');
             // Retrieve cached data
             retrieveDbData(endpoint, function(data){
