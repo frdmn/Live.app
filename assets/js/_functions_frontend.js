@@ -59,19 +59,26 @@ var renderModal = function(recipientsList, messagebody){
 /* Function to list all local PouchDBs using all-db's plugin */
 
 var listPouchDBs = function(callback){
+    // Use pouchdb-all-dbs plugin to list all existing PouchDBs
     PouchDB.allDbs().then(function (dbs) {
-      callback(dbs);
+        // Send databases as string array to callback  
+        callback(dbs);
     }).catch(function (err) {
-      console.log(err);
-      callback(false);
+        // In case of error, log and callback(false)
+        console.log(err);
+        callback(false);
     });
 };
 
 /* Function to delete a database */
  
 var deletePouchDB = function(database, callback){
+    // PouchDB init
     var pouchdb = new PouchDB(database);
+    // Try to destroy the specific database
     pouchdb.destroy(function(err, info) {
+        // If no error, callback(true),
+        // Otherwise, log error and callback(false)
         if (!err){
             callback(true);
         } else {
