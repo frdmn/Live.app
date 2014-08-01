@@ -166,7 +166,7 @@ $(function() {
                 $(friends).each(function(k,v) {
                     $('.friendlist').append('\
 <li>\
-    <button class="pseudobutton" data-xuid="' + v.id + '" data-gamertag="' + v.GameDisplayName + '">\
+    <button class="pseudobutton open-composemessage" data-xuid="' + v.id + '" data-gamertag="' + v.GameDisplayName + '">\
         <span class="sidebar-avatar">\
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
@@ -176,7 +176,7 @@ $(function() {
                 });
 
                 // Add click() function to open #composemessage modal
-                $('.pseudobutton').click(function(e) {
+                $('.open-composemessage').click(function(e) {
                     recipientsList = [];
                     recipientObject = {};
 
