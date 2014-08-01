@@ -42,7 +42,11 @@ $(function() {
         type: 'GET',
         url: settingsFile,
         dataType: 'json',
-        success: function(data) { settings = data; log.setLevel(settings.logging); log.debug('[DEBUG] Settings stored in variable in $(\'#composemessage\') modal cleared'); },
+        success: function(data) { 
+            settings = data; 
+            log.setLevel(settings.logging); 
+            log.info('[INFO] Using "' + settings.logging + '" log level'); 
+            log.debug('[DEBUG] Settings stored in variable'); },
         async: false
     });
 
@@ -98,7 +102,6 @@ $(function() {
                     // otherwise execute function to save settings
                     if (!data) {
                         $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
-                        log.error('[ERROR] Couldn\'t authenticate. API key invalid or API down?');
 
                         $('.modal#settings .submit-button').attr("disabled", false);
                         $(".modal#settings input").prop('disabled', false);
