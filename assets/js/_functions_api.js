@@ -10,10 +10,140 @@ var checkApiKey = function(input, callback) {
 
     // Send request to check API key and also store the Xuid on success 
     $.get('https://xboxapi.com/v2/accountXuid', function (data) {
+        log.debug('[DEBUG] Authentication with API key "' + apiKey + '" successful');
         callback(data);
     // Return false
     }).fail(function() {
+        log.error('[ERROR] Couldn\'t authenticate. API key invalid or API down?');
         callback(false);
+    });
+};
+
+/* Retrieve direct API data function */
+    
+var retrieveApiData = function(apiKey, endpoint, callback) {
+    // Prepare ajax request
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            // Add X-AUTH header
+            xhr.setRequestHeader('X-AUTH', apiKey);
+        }
+    });
+
+    // Fire GET
+    $.get('https://xboxapi.com/v2'+endpoint, function (data) {
+        log.info('[INFO] API call "GET ' + endpoint + '" started');
+        callback(data);
+    // In case of any error, return false
+    }).fail(function() {
+        log.warn('[WARN] Couldn\'t finish API call "GET ' + endpoint + '"');
+        callback(false);
+    });
+};
+
+/* Retrieve DB data function */
+
+var retrieveDbData = function (endpoint, callback) {
+    // PouchDB init
+    var pouchdb = new PouchDB(endpoint);
+    // Try to get()
+    pouchdb.get('jsonData', function(err, doc) {
+        // In case of error, return false
+        if (err) {
+            if (err.status != 404) {
+                log.error('[ERROR] Error while retrieving from DB: ', err);
+            }
+            callback(false);
+        }
+        // If no error, send data to callback
+        if (doc) {
+            callback(doc);
+        }
+    });
+};
+
+/* Sumbit API data function */
+
+var submitApiData = function (apikey, endpoint, content, callback) {
+    log.info('[INFO] API call "POST ' + endpoint + '" started');
+
+    // Prepare ajax request
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            // Add X-AUTH header
+            xhr.setRequestHeader('X-AUTH', apikey);
+        }
+    });
+
+    // Fire POST
+    $.post('https://xboxapi.com/v2'+endpoint, content, function (data) {
+        log.info('[INFO] API call "POST ' + endpoint + '" successfully finished');
+        callback(data);
+    // In case of any error, return false
+    }).fail(function() {
+        log.error('[ERROR] Couldn\'t finish API call "POST ' + endpoint + '"');
+        callback(false);
+    });
+};
+
+/* Submit DB data function */
+
+var submitDbData = function (input, endpoint, callback) {
+    // PouchDB init    
+    var pouchdb = new PouchDB(endpoint);
+
+    // Check for existing data
+    pouchdb.get('jsonData', function(err, otherDoc) {
+        // If no exisiting data, put() without revision
+        // Otherwise put() with revision of outdated data
+        if (!otherDoc) {
+            // Try to put() the input object into PouchDB
+            pouchdb.put(input, 'jsonData', function(err, response) {
+                // In case of errors, return false
+                if (err) {
+                    log.error('[ERROR] Couldn\'t transfer "' + endpoint + '" into database', err);
+                    callback(false);
+                }
+                // If no errors, send response to callback
+                if (response){
+                    log.info('[INFO] API call "' + endpoint + '" finished');
+                    callback(response);
+                }
+            });
+        } else {
+            // Try to put() the input object into PouchDB
+            pouchdb.put(input, 'jsonData', otherDoc._rev, function(err, response) {
+                // In case of errors, return false
+                if (err) {
+                    log.error("[ERROR] Couldn't transfer settings into database", err);
+                    callback(false);
+                }
+                // If no errors, send response to callback
+                if (response){
+                    log.info("[INFO] Settings successfully saved");
+                    callback(response);
+                }
+            });
+        }
+    });
+};
+
+/* Function to send message */
+
+var sendMessage = function(apikey, recipients, message, callback){
+    var jsonObject = {};
+
+    jsonObject.recipients = recipients;
+    jsonObject.message = message;
+
+    submitApiData(apikey, '/messages', jsonObject, function(data){
+        if (!data) {
+            log.error("[ERROR] Couldn't send message - ", recipients, message);
+            callback(false);
+        } else {
+            log.info("[INFO] Message successfully sent!", recipients, message);
+            callback(true);
+        }
     });
 };
 
@@ -34,17 +164,14 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
         if (!data || dataExpired) {
             // Display caching status of cachable objects in PouchDB
             if (data && dataExpired) {
-                console.log('[INFO] Cache expired for "' + endpoint + ': ' + dataExpiredCondition + ' ms > ' + cache);
+                log.info('[INFO] Cache expired for "' + endpoint + ': ' + dataExpiredCondition + ' ms > ' + cache);
             }
-
-            console.log('[INFO] API call "GET ' + endpoint + '" started');
 
             // Execute retrieve function
             retrieveApiData(apiKey, endpoint, function(data) {
                 // In case of server side API error, return false
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
-                    console.log('[WARN] Couldn\'t finish API call "GET ' + endpoint + '"!');
                     // Hide loading spinner again
                     hideLoadingSpinner();                          
                     callback(false);
@@ -63,7 +190,6 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                             hideLoadingSpinner();                          
                             callback(false);
                         } else {
-                            console.log('[INFO] API call "' + endpoint + '" finished');
                             // Hide loading spinner again
                             hideLoadingSpinner();                          
                             callback(data);
@@ -72,137 +198,15 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                 }
             });
         } else {
-            console.log('[INFO] DB call "' + endpoint + '" started');
+            log.info('[INFO] DB call "' + endpoint + '" started');
             // Retrieve cached data
             retrieveDbData(endpoint, function(data){
-                console.log('[INFO] DB call "' + endpoint + '" finished');
+                log.info('[INFO] DB call "' + endpoint + '" finished');
                 // Hide loading spinner again
                 hideLoadingSpinner();                          
                 // Send callback
                 callback(data.jsonData);
             });
-        }
-    });
-};
-
-/* Retrieve direct API data function */
-    
-var retrieveApiData = function(apiKey, endpoint, callback) {
-    // Prepare ajax request
-    $.ajaxSetup({
-        beforeSend: function(xhr) {
-            // Add X-AUTH header
-            xhr.setRequestHeader('X-AUTH', apiKey);
-        }
-    });
-
-    // Fire GET
-    $.get('https://xboxapi.com/v2'+endpoint, function (data) {
-        callback(data);
-    // In case of any error, return false
-    }).fail(function() {
-        callback(false);
-    });
-};
-
-/* Retrieve DB data function */
-
-var retrieveDbData = function (endpoint, callback) {
-    // PouchDB init
-    var pouchdb = new PouchDB(endpoint);
-    // Try to get()
-    pouchdb.get('jsonData', function(err, doc) {
-        // In case of error, return false
-        if (err) {
-            if (err.status != 404) {
-                console.log(err);
-            }
-            callback(false);
-        }
-        // If no error, send data to callback
-        if (doc) {
-            callback(doc);
-        }
-    });
-};
-
-/* Sumbit API data function */
-
-var submitApiData = function (apikey, endpoint, content, callback) {
-    console.log('[INFO] API call "POST ' + endpoint + '" started');
-
-    // Prepare ajax request
-    $.ajaxSetup({
-        beforeSend: function(xhr) {
-            // Add X-AUTH header
-            xhr.setRequestHeader('X-AUTH', apikey);
-        }
-    });
-
-    // Fire POST
-    $.post('https://xboxapi.com/v2'+endpoint, content, function (data) {
-        console.log(data);
-        console.log('[INFO] API call "POST ' + endpoint + '" successfully finished');
-        callback(data);
-    // In case of any error, return false
-    }).fail(function() {
-        callback(false);
-    });
-};
-
-/* Submit DB data function */
-
-var submitDbData = function (input, endpoint, callback) {
-    // PouchDB init    
-    var pouchdb = new PouchDB(endpoint);
-
-    // Check for existing data
-    pouchdb.get('jsonData', function(err, otherDoc) {
-        // If no exisiting data, put() without revision
-        // Otherwise put() with revision of outdated data
-        if (!otherDoc) {
-            // Try to put() the input object into PouchDB
-            pouchdb.put(input, 'jsonData', function(err, response) {
-                // In case of errors, return false
-                if (err) {
-                    console.log(err);
-                    callback(false);
-                }
-                // If no errors, send response to callback
-                if (response){
-                    callback(response);
-                }
-            });
-        } else {
-            // Try to put() the input object into PouchDB
-            pouchdb.put(input, 'jsonData', otherDoc._rev, function(err, response) {
-                // In case of errors, return false
-                if (err) {
-                    console.log(err);
-                    callback(false);
-                }
-                // If no errors, send response to callback
-                if (response){
-                    callback(response);
-                }
-            });
-        }
-    });
-};
-
-/* Function to send message */
-
-var sendMessage = function(apikey, recipients, message, callback){
-    var jsonObject = {};
-
-    jsonObject.recipients = recipients;
-    jsonObject.message = message;
-
-    submitApiData(apikey, '/messages', jsonObject, function(data){
-        if (!data) {
-            callback(false);
-        } else {
-            callback(true);
         }
     });
 };

@@ -2,9 +2,9 @@
 
 var renderModal = function(recipientsList, messagebody){
     // Selector helpers
-    var recipientsSelector = '.modal#composemessage select.chosen-recipients';
-    var messageSelector = '.modal#composemessage textarea#messagebody';
-    var modalSelector = '.modal#composemessage';
+    var recipientsSelector = '.modal#composemessage select.chosen-recipients',
+        messageSelector = '.modal#composemessage textarea#messagebody';
+        modalSelector = '.modal#composemessage';
 
     // If message body, prefill
     if (messagebody) {
@@ -65,7 +65,7 @@ var listPouchDBs = function(callback){
         callback(dbs);
     }).catch(function (err) {
         // In case of error, log and callback(false)
-        console.log(err);
+        log.error("[ERROR] Error while listing databases: ", err);
         callback(false);
     });
 };
@@ -82,7 +82,7 @@ var deletePouchDB = function(database, callback){
         if (!err){
             callback(true);
         } else {
-            console.log(err);
+            log.error("[ERROR] Error while destroying databases: ", err);
             callback(false);
         }
     });

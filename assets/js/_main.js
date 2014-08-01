@@ -6,12 +6,16 @@ $(function() {
         e.preventDefault();
         // Toggle "active" class
         $("#wrapper").toggleClass("active");
+        // Write log
+        log.info('[INFO] Sidebar toggled');
     });
 
     /* Modal stuff */
 
     // Reload if initial settings modal gets closed without success
     $('.modal#settings').on('hidden.bs.modal', function () {
+        // Write log
+        log.debug('[DEBUG] Settings modal closed => reload Live.app');
         // Check for existing settings in PouchDB
         retrieveDbData('settings', function(data){
             // Reload, if no settings in database to show settings modal again
@@ -26,6 +30,8 @@ $(function() {
         $('.modal#composemessage textarea').html('');
         $('.modal#composemessage select.chosen-recipients').empty();
         $('.modal#composemessage select.chosen-recipients').trigger("chosen:updated");
+        // Write log
+        log.debug('[DEBUG] Inputs in $(\'#composemessage\') modal cleared');
     });
 
     /* Load settings (synchronously) out of the settings.json file */
@@ -36,7 +42,7 @@ $(function() {
         type: 'GET',
         url: settingsFile,
         dataType: 'json',
-        success: function(data) { settings = data;},
+        success: function(data) { settings = data; log.setLevel(settings.logging); log.debug('[DEBUG] Settings stored in variable in $(\'#composemessage\') modal cleared'); },
         async: false
     });
 
@@ -52,15 +58,15 @@ $(function() {
             $(data).each(function(k,v){
                 deletePouchDB(v, function(callback){
                     if (callback) {
-                        console.log('[INFO] Destroyed local database "' + v + '"');
+                        log.info('[INFO] Destroyed local database "' + v + '"');
                     } else {
-                        console.log('[ERROR] Couldn\'t destroy local database "' + v + '"');
+                        log.error('[ERROR] Couldn\'t destroy local database "' + v + '"');
                     }
                 });
             });
          
             // Initiate refresh, to show first start modal again
-            console.log('[INFO] Refresh in 1.5 seconds');
+            log.debug('[DEBUG] Refresh in 1.5 seconds');
             setTimeout(function(){
                 location.reload();
             }, 1500);
@@ -69,42 +75,43 @@ $(function() {
 
     // Check for existing settings in PouchDB
     retrieveDbData('settings', function(data){
-
         // If no existing settings db open modal to gather user input,
         // otherwise continue page rendering
         if (!data) {
+            log.debug('[DEBUG] Couldn\'t find "settings" database. Proceed to show initial setup modal');
             $('.modal#settings').modal('show');
 
             // Submit API key on submit
             $('.modal#settings .submit-button').click(function (){
-                $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
-                $(this).attr("disabled", true);
-                $(".modal#settings input").prop('disabled', true);
-
                 settingsData = {};
                 settingsData.apiKey = $('.modal input').val();
 
+                $.bootstrapGrowl('Trying to connect to XboxAPI.com...', { type: 'info' });
+                log.info('[INFO] Trying to connect to XboxAPI.com using the API key: "' + settingsData.apiKey + '"');
+
+                $(this).attr("disabled", true);
+                $(".modal#settings input").prop('disabled', true);
+
                 // Check API key
                 checkApiKey(settingsData.apiKey, function(data){
-
                     // If invalid API key show notification 
                     // otherwise execute function to save settings
                     if (!data) {
                         $.bootstrapGrowl('API key seems invalid. Please check!', { type: 'danger' });
+                        log.error('[ERROR] Couldn\'t authenticate. API key invalid or API down?');
+
                         $('.modal#settings .submit-button').attr("disabled", false);
                         $(".modal#settings input").prop('disabled', false);
                     } else {
-
                         settingsData.xuid = data.xuid;
                         settingsData.gamerTag = data.gamerTag;
 
                         submitDbData(settingsData, 'settings', function(){
-                            if (!data) {
-                                console.log("[ERROR] Couldn't transfer settings into database");
-                            } else {
-                                console.log("[INFO] Settings successfully saved");
+                            if (data) {
                                 $.bootstrapGrowl('Valid API key! Successfully saved', { type: 'success' });
+                                
                                 // Wait 2 seconds for the notfication, then reload to show the dashboard
+                                log.debug("[DEBUG] Wait 2 seconds, then reload");
                                 setTimeout(function() {
                                     location.reload();
                                 }, 2000);    
@@ -114,7 +121,7 @@ $(function() {
                 });
             });
         } else {
-            console.log('[INFO] API key: ' + data.apiKey);
+            log.info('[INFO] "settings" database found. Using API key: ' + data.apiKey);
 
             /* Execute function to send message on submit */
     
@@ -129,6 +136,7 @@ $(function() {
                     messageObject;
 
                 $(recipientsSelector+' option:selected').each(function(){
+                    log.debug('Recipient found: "' + $(this).val() + '"');
                     recipientsObject.push($(this).val());
                 });
 
@@ -139,15 +147,13 @@ $(function() {
                     if (!data) {
                         $(this).attr("disabled", "enabled");
                         $.bootstrapGrowl('Error while sending message :(', { type: 'danger' });
-                        console.log("[ERROR] Couldn't send message - ", recipients, message);
                     } else {
                         $(this).attr("disabled", "enabled");
                         $.bootstrapGrowl('Message successfully sent!', { type: 'success' });
-                        console.log("[INFO] Message successfully sent!", recipients, message);
                     }
                 });
             });
-
+            
             // Test call to render the friends in the sidebar
             apiCall(data.apiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
                 var friends = data;
