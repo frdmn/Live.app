@@ -70,6 +70,7 @@ module.exports = function(grunt) {
                     '<%= dirs.bower %>/typeahead.js/dist/typeahead.bundle.js',
                     '<%= dirs.bower %>/chosen/chosen.jquery.js',
                     '<%= dirs.bower %>/pouchdb-all-dbs/dist/pouchdb.all-dbs.js',
+                    '<%= dirs.bower %>/loglevel/dist/loglevel.js',
                     '<%= dirs.js %>/*.js',
                     '!<%= dirs.js %>/modernizr.js',
                     '!<%= dirs.js %>/build.js'
