@@ -11,11 +11,13 @@ The project is a work in progress!
 
 Main page
 
-![](http://up.frd.mn/0CD09.png)
+![](http://up.frd.mn/yMVqV.png)
 
 Mobile view
 
-![](http://up.frd.mn/vw1mL.png)
+![](http://up.frd.mn/r0w1a.png)
+
+![](http://up.frd.mn/MPgkc.png)
 
 ### Requirements
 
