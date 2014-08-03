@@ -74,6 +74,8 @@ var submitApiData = function (apikey, endpoint, content, callback) {
         beforeSend: function(xhr) {
             // Add X-AUTH header
             xhr.setRequestHeader('X-AUTH', apikey);
+            // Add Content-Type header
+            xhr.setRequestHeader('Content-Type', 'application/json');
         }
     });
 
@@ -135,7 +137,7 @@ var submitDbData = function (input, endpoint, callback) {
 var sendMessage = function(apikey, recipients, message, callback){
     var jsonObject = {};
 
-    jsonObject.recipients = recipients;
+    jsonObject.to = recipients;
     jsonObject.message = message;
 
     submitApiData(apikey, '/messages', jsonObject, function(data){
