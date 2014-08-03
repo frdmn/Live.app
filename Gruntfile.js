@@ -1,7 +1,4 @@
 module.exports = function(grunt) {
-    var buildPlatforms = parseBuildPlatforms(grunt.option('platforms'));
-    var currentVersion = grunt.file.readJSON('package.json').version;
-
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
