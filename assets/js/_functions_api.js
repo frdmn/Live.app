@@ -137,7 +137,7 @@ var submitDbData = function (input, endpoint, callback) {
 var sendMessage = function(apikey, recipients, message, callback){
     var jsonObject = {};
 
-    jsonObject.recipients = recipients;
+    jsonObject.to = recipients;
     jsonObject.message = message;
 
     submitApiData(apikey, '/messages', jsonObject, function(data){
