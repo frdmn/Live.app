@@ -74,6 +74,8 @@ var submitApiData = function (apikey, endpoint, content, callback) {
         beforeSend: function(xhr) {
             // Add X-AUTH header
             xhr.setRequestHeader('X-AUTH', apikey);
+            // Add Content-Type header
+            xhr.setRequestHeader('Content-Type', 'application/json');
         }
     });
 
