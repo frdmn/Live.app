@@ -146,6 +146,7 @@ $(function() {
                         $(this).attr("disabled", "enabled");
                     } else {
                         $(this).attr("disabled", "enabled");
+                        $('#composemessage').modal('hide');
                     }
                 });
             });
