@@ -80,7 +80,7 @@ var submitApiData = function (apikey, endpoint, content, callback) {
     });
 
     // Fire POST
-    $.post('https://xboxapi.com/v2'+endpoint, content, function (data) {
+    $.post('https://xboxapi.com/v2'+endpoint, JSON.stringify(content), function (data) {
         log.info('[INFO] API call "POST ' + endpoint + '" successfully finished');
         callback(data);
     // In case of any error, return false
