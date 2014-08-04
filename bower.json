@@ -4,7 +4,7 @@
   "authors": [
     "Jonas Friedmann"
   ],
-  "description": "[TODO]",
+  "description": "Live.app is a client side JavaScript web app to message your Xbox Live friends.",
   "license": "MIT",
   "private": true,
   "ignore": [
