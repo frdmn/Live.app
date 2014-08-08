@@ -7,17 +7,15 @@ The project is a work in progress!
 
 ### Screenshots
 
-(These are just mockups at the moment, since this project is still WIP!)
-
 Main page
 
 ![](http://up.frd.mn/yMVqV.png)
 
 Mobile view
 
-![](http://up.frd.mn/r0w1a.png)
+![](http://up.frd.mn/Gh8SP.png)
 
-![](http://up.frd.mn/MPgkc.png)
+![](http://up.frd.mn/armBs.png)
 
 ### Requirements
 
