@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+    var buildPlatforms = parseBuildPlatforms(grunt.option('platforms'));
+
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
