@@ -1,4 +1,16 @@
 $(function() {
+    /* If node-webkit open settings on ⌘ + 0 */
+    
+    $(window).keydown(function(e) {
+        if (e.keyCode == 48 && e.metaKey) {
+            if (require) { 
+                var gui = require('nw.gui');
+                var win = gui.Window.get();
+                win.showDevTools();
+            }
+        }
+    });
+
     /* Sidebar toggle */ 
 
     $("#menu-toggle").click(function(e) {
