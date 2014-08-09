@@ -1,7 +1,15 @@
 {
   "name": "liveapp",
   "version": "0.0.3",
+  "main": "index.html",
   "description": "...",
+  "window": {
+      "toolbar": false,
+      "width": 960,
+      "height": 640,
+      "resizable": true,
+      "position": "center"
+  },  
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-sass": "~0.7.2",
@@ -15,6 +23,7 @@
     "grunt-contrib-imagemin": "~0.4.1",
     "grunt-htmlhint": "~0.4.0",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-notify": "~0.3.0"
+    "grunt-notify": "~0.3.0",
+    "grunt-node-webkit-builder": "~0.1.21"
   }
 }

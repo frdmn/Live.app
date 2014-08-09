@@ -1,4 +1,19 @@
 $(function() {
+    /* If node-webkit open dev tools */
+
+    $(window).keydown(function(e) {
+        // If ⌘ + 0 (Mac) or CTRL + 0 (Windows)
+        if ((e.keyCode == 48 && e.metaKey) || (e.keyCode == 48 && e.ctrlKey)) {
+            // Check if require exists (node-webkit)
+            if (require) { 
+                var gui = require('nw.gui');
+                var win = gui.Window.get();
+                // Show dev tools
+                win.showDevTools();
+            }
+        }
+    });
+
     /* Sidebar toggle */ 
 
     $("#menu-toggle").click(function(e) {
@@ -36,7 +51,7 @@ $(function() {
 
     /* Load settings (synchronously) out of the settings.json file */
 
-    var settingsFile = '../../settings.json';
+    var settingsFile = 'settings.json';
     var settings = [];
     $.ajax({
         type: 'GET',
@@ -150,7 +165,7 @@ $(function() {
                     }
                 });
             });
-            
+
             // Test call to render the friends in the sidebar
             apiCall(data.apiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
                 var friends = data;

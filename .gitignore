@@ -6,6 +6,9 @@
 node_modules
 bower_components
 
+# node-webkit build folder
+build
+
 # Assets and files that we're actually compile
 assets/fonts
 assets/svg
