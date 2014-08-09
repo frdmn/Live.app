@@ -36,7 +36,7 @@ $(function() {
 
     /* Load settings (synchronously) out of the settings.json file */
 
-    var settingsFile = '../../settings.json';
+    var settingsFile = 'settings.json';
     var settings = [];
     $.ajax({
         type: 'GET',
@@ -149,7 +149,7 @@ $(function() {
                     }
                 });
             });
-            
+
             // Test call to render the friends in the sidebar
             apiCall(data.apiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
                 var friends = data;
