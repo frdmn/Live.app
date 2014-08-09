@@ -1,8 +1,8 @@
 $(function() {
     /* If node-webkit open settings on ⌘ + 0 */
-    
+
     $(window).keydown(function(e) {
-        if (e.keyCode == 48 && e.metaKey) {
+        if ((e.keyCode == 48 && e.metaKey) || (e.keyCode == 48 && e.ctrlKey)) {
             if (require) { 
                 var gui = require('nw.gui');
                 var win = gui.Window.get();
