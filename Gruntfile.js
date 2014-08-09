@@ -168,7 +168,7 @@ module.exports = function(grunt) {
                 linux32: buildPlatforms.linux32,
                 linux64: buildPlatforms.linux64
             },
-            src: ['./assets/css/*.css', './assets/fonts/*', './assets/js/*.js', './settings.json', './node_modules/**', '!./node_modules/**', './index.html', './package.json', './README.md' ]
+            src: ['./assets/css/*.css', './assets/svg/*', './assets/fonts/*', './assets/js/*.js', './settings.json', './node_modules/**', '!./node_modules/**', './index.html', './package.json', './README.md' ]
         }
     });
 
