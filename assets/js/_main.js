@@ -1,11 +1,14 @@
 $(function() {
-    /* If node-webkit open settings on ⌘ + 0 */
+    /* If node-webkit open dev tools */
 
     $(window).keydown(function(e) {
+        // If ⌘ + 0 (Mac) or CTRL + 0 (Windows)
         if ((e.keyCode == 48 && e.metaKey) || (e.keyCode == 48 && e.ctrlKey)) {
+            // Check if require exists (node-webkit)
             if (require) { 
                 var gui = require('nw.gui');
                 var win = gui.Window.get();
+                // Show dev tools
                 win.showDevTools();
             }
         }
