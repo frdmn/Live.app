@@ -172,7 +172,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['copy', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin', 'build']);
+    grunt.registerTask('default', ['copy', 'sass:build', 'autoprefixer', 'concat', 'uglify', 'imagemin']);
     grunt.registerTask('dev', ['copy', 'connect', 'watch']);
     grunt.registerTask('build', ['nodewebkit']);
 };
