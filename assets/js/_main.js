@@ -1,5 +1,5 @@
 $(function() {
-    /* If node-webkit open dev tools */
+    /* If node-webkit open dev tools on specific shortcut */
 
     $(window).keydown(function(e) {
         // If ⌘ + 0 (Mac) or CTRL + 0 (Windows)
