@@ -199,7 +199,10 @@ $(function() {
 
                 // Call presence endpoint to render connectivity status of friends
                 submitApiData(DBapiKey, '/presence', presenceObject, function(data){
-                    console.log(data);
+                    $(data).each(function(k,v){
+                        console.log(v);
+                        $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble--' + v.state.toLowerCase());
+                    });
                 });
 
                 // Add click() function to open #composemessage modal
