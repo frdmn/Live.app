@@ -222,7 +222,7 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
 
 var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
     // Show loading spinner
-    showLoadingSpinner();
+    if(endpoint != 'presence') { showLoadingSpinner(); } 
 
     // Try to get the cached API results out of PouchDB
     retrieveDbData(endpoint, function(data){
@@ -246,7 +246,7 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
                     // Hide loading spinner again
-                    hideLoadingSpinner();                          
+                    if(endpoint != 'presence') { hideLoadingSpinner(); } 
                     callback(false);
                 } else {
                     // Create new object to append a timestamp
