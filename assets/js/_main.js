@@ -188,6 +188,7 @@ $(function() {
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
         ' + v.GameDisplayName + '\
+        <span class="bubble"></span>\
     </button>\
 </li>');
                 });
