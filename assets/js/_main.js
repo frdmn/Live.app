@@ -187,7 +187,7 @@ $(function() {
         <span class="sidebar-avatar">\
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
-        <span class="bubble"></span>\
+        <span class="bubble" data-xuid="' + v.id + '"></span>\
         ' + v.GameDisplayName + '\
     </button>\
 </li>');
