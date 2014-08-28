@@ -187,8 +187,8 @@ $(function() {
         <span class="sidebar-avatar">\
             <img src="http://avatar.xboxlive.com/avatar/' + encodeURIComponent(v.GameDisplayName) + '/avatarpic-l.png"> \
         </span>\
-        ' + v.GameDisplayName + '\
         <span class="bubble"></span>\
+        ' + v.GameDisplayName + '\
     </button>\
 </li>');
                 });
@@ -200,7 +200,6 @@ $(function() {
                 // Call presence endpoint to render connectivity status of friends
                 submitApiData(DBapiKey, '/presence', presenceObject, function(data){
                     $(data).each(function(k,v){
-                        console.log(v);
                         $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble--' + v.state.toLowerCase());
                     });
                 });
