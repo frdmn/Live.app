@@ -174,8 +174,13 @@ $(function() {
                 var friends = data;
                 // Remove loading element
                 $('.friendlist').html('');
+                // Create list for Xuids of all friends
+                var xuidList = [];
                 // Add button for each friend
                 $(friends).each(function(k,v) {
+                    // Push Xuid into xuidList
+                    xuidList.push(v.id);
+                    // Append in "friendlist" container
                     $('.friendlist').append('\
 <li>\
     <button class="pseudobutton open-composemessage" data-xuid="' + v.id + '" data-gamertag="' + v.GameDisplayName + '">\
@@ -185,6 +190,15 @@ $(function() {
         ' + v.GameDisplayName + '\
     </button>\
 </li>');
+                });
+
+                // Prepare presence data
+                var presenceObject = {};
+                presenceObject.users = xuidList;
+
+                // Call presence endpoint to render connectivity status of friends
+                submitApiData(DBapiKey, '/presence', presenceObject, function(data){
+                    console.log(data);
                 });
 
                 // Add click() function to open #composemessage modal
