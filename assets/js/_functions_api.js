@@ -284,3 +284,18 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
         }
     });
 };
+
+/* Get connectivity status */
+
+function updateConnectivityIndicator(apiKey, presenceObject, cache, callback){
+    // Call presence endpoint to render connectivity status of friends
+    apiPostCall(apiKey, '/presence', presenceObject, cache, function(data){
+        $(data).each(function(k,v){
+            $('button[data-xuid="' + v.xuid + '"] span.bubble').removeClass();
+            $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble');
+            $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble--' + v.state.toLowerCase());
+        });
+    });
+
+    callback(true);
+}

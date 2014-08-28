@@ -197,11 +197,10 @@ $(function() {
                 var presenceObject = {};
                 presenceObject.users = xuidList;
 
-                // Call presence endpoint to render connectivity status of friends
-                apiPostCall(DBapiKey, '/presence', presenceObject, settings.cache.presence, function(data){
-                    $(data).each(function(k,v){
-                        $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble--' + v.state.toLowerCase());
-                    });
+                updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence, function(data){
+                    if(data){
+                        console.log("Friends connectivity status updated!")
+                    } 
                 });
 
                 // Add click() function to open #composemessage modal
