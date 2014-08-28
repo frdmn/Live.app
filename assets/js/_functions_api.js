@@ -217,3 +217,70 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
         }
     });
 };
+
+/* API POST call function */
+
+var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
+    // Show loading spinner
+    showLoadingSpinner();
+
+    // Try to get the cached API results out of PouchDB
+    retrieveDbData(endpoint, function(data){
+        timestampNow = $.now();
+        var dataExpiredCondition = (timestampNow - data.timestamp) / 1000,
+            dataExpired = (dataExpiredCondition >= cache);
+
+        log.debug('[DEBUG] Check if cache is expired for endpoint "' + endpoint + '"');
+
+        // If no result or caching value exceeded => call API directly
+        // Otherwise return cached API results out of PouchDB
+        if (!data || dataExpired) {
+            // Display caching status of cachable objects in PouchDB
+            if (data && dataExpired) {
+                log.info('[INFO] Cache expired for "' + endpoint + ': ' + dataExpiredCondition + ' ms > ' + cache);
+            }
+
+            // Execute submit function
+            submitApiData(apiKey, endpoint, postdata, function(data) {
+                // In case of server side API error, return false
+                // Otherwise proceed to transfer the API results into local database
+                if (!data) {
+                    // Hide loading spinner again
+                    hideLoadingSpinner();                          
+                    callback(false);
+                } else {
+                    // Create new object to append a timestamp
+                    var jsonObject = {};
+                    jsonObject.timestamp  = timestampNow;
+                    jsonObject.jsonData = data;
+
+                    // Try to submit the data into the DB
+                    submitDbData(jsonObject, endpoint, function(submitData){
+                        // Return false in case of error
+                        // Otherwise, send to callback 
+                        if (!submitData) {
+                            // Hide loading spinner again
+                            hideLoadingSpinner();                          
+                            callback(false);
+                        } else {
+                            // Hide loading spinner again
+                            hideLoadingSpinner();                          
+                            callback(data);
+                        }
+                    });
+                }
+            });
+        } else {
+            log.debug('[DEBUG] Cache not expired for "' + endpoint + '". Deliver cached version from PouchDB.');
+            log.info('[INFO] DB call "' + endpoint + '" started');
+            // Retrieve cached data
+            retrieveDbData(endpoint, function(data){
+                log.info('[INFO] DB call "' + endpoint + '" finished');
+                // Hide loading spinner again
+                hideLoadingSpinner();                          
+                // Send callback
+                callback(data.jsonData);
+            });
+        }
+    });
+};
