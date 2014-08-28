@@ -198,7 +198,7 @@ $(function() {
                 presenceObject.users = xuidList;
 
                 // Call presence endpoint to render connectivity status of friends
-                submitApiData(DBapiKey, '/presence', presenceObject, function(data){
+                apiPostCall(DBapiKey, '/presence', presenceObject, settings.cache.presence, function(data){
                     $(data).each(function(k,v){
                         $('button[data-xuid="' + v.xuid + '"] span.bubble').addClass('bubble--' + v.state.toLowerCase());
                     });
