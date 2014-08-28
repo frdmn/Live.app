@@ -1,7 +1,8 @@
 {
-	"logging":"warn",
+    "logging":"warn",
     "cache":{
         "friends":100,
-        "messages":100
+        "messages":100,
+        "presence":60
     }
 }
