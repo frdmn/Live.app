@@ -197,11 +197,11 @@ $(function() {
                 var presenceObject = {};
                 presenceObject.users = xuidList;
 
-                // Update connectivity indicators initially and every 60 seconds
+                // Update connectivity indicators initially and every settings.cache.presence seconds
                 updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence);
                 setInterval(function(){
                     updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence);
-                },60000);
+                },settings.cache.presence * 1000);
 
                 // Add click() function to open #composemessage modal
                 $('.open-composemessage').click(function(e) {
