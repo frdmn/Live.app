@@ -135,6 +135,9 @@ $(function() {
             });
         } else {
             log.info('[INFO] "settings" database found. Using API key: ' + data.apiKey);
+            
+            // Init variable to store API key out of DB
+            var DBapiKey = data.apiKey;
 
             /* Execute function to send message on submit */
     
@@ -156,7 +159,7 @@ $(function() {
                 messageObject = $(messageSelector).val();
 
                 // Try to send message
-                sendMessage(data.apiKey, recipientsObject, messageObject, function(data){
+                sendMessage(DBapiKey, recipientsObject, messageObject, function(data){
                     if (!data) {
                         $(this).attr("disabled", "enabled");
                     } else {
@@ -167,7 +170,7 @@ $(function() {
             });
 
             // Test call to render the friends in the sidebar
-            apiCall(data.apiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
+            apiCall(DBapiKey, '/' + data.xuid + '/friends', settings.cache.friends, function(data){
                 var friends = data;
                 // Remove loading element
                 $('.friendlist').html('');
@@ -199,7 +202,7 @@ $(function() {
             });
 
             // Test call to render messages
-            apiCall(data.apiKey, '/messages', settings.cache.messages, function(data){
+            apiCall(DBapiKey, '/messages', settings.cache.messages, function(data){
                 var messages = data;
                 var i = 0;
                 // Clear timeline
