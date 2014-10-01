@@ -25,13 +25,6 @@ Mobile view
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/frdmn/Live.app`
-2. Install all dependencies: `npm install`
-3. Install web libraries: `bower install`
-4. Run grunt task: `grunt`
-5. Adjust settings: `cp settings-sample.json settings.json`
-6. Thats it. Open `index.html`!
-
 1. Clone the repository:  
   `git clone https://github.com/frdmn/Live.app`
 2. Duplicate and rename the example settings file:  
