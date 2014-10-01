@@ -19,7 +19,8 @@ Mobile view
 
 ### Requirements
 
-* Installed `npm` and `grunt`: `npm install -g grunt-cli` 
+* NodeJS (`npm`)
+* Ruby (`gem`)
 * API key for [XboxAPI](https://xboxapi.com/documentation)
 
 ### Installation
@@ -30,6 +31,23 @@ Mobile view
 4. Run grunt task: `grunt`
 5. Adjust settings: `cp settings-sample.json settings.json`
 6. Thats it. Open `index.html`!
+
+1. Clone the repository:  
+  `git clone https://github.com/frdmn/Live.app`
+2. Duplicate and rename the example settings file:  
+  `cp settings-example.json	settings.json`  
+3. Adjust the users and the log file path in the configuration file:  
+  `editor settings.json`
+4. Install dependencies:  
+  `npm install -g grunt-cli`  
+  `gem install sass`  
+5. Install all packages:  
+  `npm install`
+6. Install web libraries:  
+  `bower install`
+7. Run grunt task:  
+  `grunt`
+8. Thats it. Open `index.html`!
 
 ### settings.json
 
@@ -42,9 +60,9 @@ Mobile view
 
 ### Dependencies
 
-* NodeJS (`npm`)
 * Bower
 * Grunt
+* Sass
 
 ## Version
 
