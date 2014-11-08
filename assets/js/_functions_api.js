@@ -8,7 +8,7 @@ var checkApiKey = function(input, callback) {
         }
     });
 
-    // Send request to check API key and also store the Xuid on success 
+    // Send request to check API key and also store the Xuid on success
     $.get('https://xboxapi.com/v2/accountXuid', function (data) {
         log.debug('[DEBUG] Authentication with API key "' + apiKey + '" successful');
         callback(data);
@@ -20,7 +20,7 @@ var checkApiKey = function(input, callback) {
 };
 
 /* Retrieve direct API data function */
-    
+
 var retrieveApiData = function(apiKey, endpoint, callback) {
     // Prepare ajax request
     $.ajaxSetup({
@@ -93,7 +93,7 @@ var submitApiData = function (apikey, endpoint, content, callback) {
 /* Submit DB data function */
 
 var submitDbData = function (input, endpoint, callback) {
-    // PouchDB init    
+    // PouchDB init
     var pouchdb = new PouchDB(endpoint);
 
     // Check for existing data
@@ -179,7 +179,7 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
                     // Hide loading spinner again
-                    hideLoadingSpinner();                          
+                    hideLoadingSpinner();
                     callback(false);
                 } else {
                     // Create new object to append a timestamp
@@ -190,14 +190,14 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
                     // Try to submit the data into the DB
                     submitDbData(jsonObject, endpoint, function(submitData){
                         // Return false in case of error
-                        // Otherwise, send to callback 
+                        // Otherwise, send to callback
                         if (!submitData) {
                             // Hide loading spinner again
-                            hideLoadingSpinner();                          
+                            hideLoadingSpinner();
                             callback(false);
                         } else {
                             // Hide loading spinner again
-                            hideLoadingSpinner();                          
+                            hideLoadingSpinner();
                             callback(data);
                         }
                     });
@@ -210,7 +210,7 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
             retrieveDbData(endpoint, function(data){
                 log.info('[INFO] DB call "' + endpoint + '" finished');
                 // Hide loading spinner again
-                hideLoadingSpinner();                          
+                hideLoadingSpinner();
                 // Send callback
                 callback(data.jsonData);
             });
@@ -222,7 +222,7 @@ var apiCall = function (apiKey, endpoint, cache, callback) {
 
 var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
     // Show loading spinner
-    if(endpoint != 'presence') { showLoadingSpinner(); } 
+    if(endpoint != 'presence') { showLoadingSpinner(); }
 
     // Try to get the cached API results out of PouchDB
     retrieveDbData(endpoint, function(data){
@@ -246,7 +246,7 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
                 // Otherwise proceed to transfer the API results into local database
                 if (!data) {
                     // Hide loading spinner again
-                    if(endpoint != 'presence') { hideLoadingSpinner(); } 
+                    if(endpoint != 'presence') { hideLoadingSpinner(); }
                     callback(false);
                 } else {
                     // Create new object to append a timestamp
@@ -257,14 +257,14 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
                     // Try to submit the data into the DB
                     submitDbData(jsonObject, endpoint, function(submitData){
                         // Return false in case of error
-                        // Otherwise, send to callback 
+                        // Otherwise, send to callback
                         if (!submitData) {
                             // Hide loading spinner again
-                            hideLoadingSpinner();                          
+                            hideLoadingSpinner();
                             callback(false);
                         } else {
                             // Hide loading spinner again
-                            hideLoadingSpinner();                          
+                            hideLoadingSpinner();
                             callback(data);
                         }
                     });
@@ -277,7 +277,7 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
             retrieveDbData(endpoint, function(data){
                 log.info('[INFO] DB call "' + endpoint + '" finished');
                 // Hide loading spinner again
-                hideLoadingSpinner();                          
+                hideLoadingSpinner();
                 // Send callback
                 callback(data.jsonData);
             });
@@ -287,11 +287,13 @@ var apiPostCall = function (apiKey, endpoint, postdata, cache, callback) {
 
 /* Get connectivity status */
 
-function updateConnectivityIndicator(apiKey, presenceObject, cache){
+var updateConnectivityIndicator = function(apiKey, presenceObject, cache, callback){
     // Call presence endpoint to render connectivity status of friends
     apiPostCall(apiKey, '/presence', presenceObject, cache, function(data){
         $(data).each(function(k,v){
             $('.bubble[data-xuid="' + v.xuid + '"]').removeClass().addClass('bubble bubble--' + v.state.toLowerCase());
         });
+        // If updated all status indicators, fire callback
+        callback(true);
     });
-}
+};
