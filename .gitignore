@@ -13,6 +13,7 @@ build
 assets/fonts
 assets/svg
 assets/css/style.css
+assets/css/style.css.map
 assets/js/build.js
 assets/css/_chosen.scss
 assets/css/chosen-sprite.png
