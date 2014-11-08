@@ -18,7 +18,8 @@ module.exports = function(grunt) {
         sass: {
             dev: {
                 options: {
-                    style: 'expanded'
+                    style: 'expanded',
+                    loadPath: ''
                 },
                 files: {
                     '<%= dirs.css %>/style.css': '<%= dirs.css %>/style.scss'
@@ -26,7 +27,8 @@ module.exports = function(grunt) {
             },
             build: {
                 options: {
-                    style: 'compressed'
+                    style: 'compressed',
+                    loadPath: ''
                 },
                 files: {
                     '<%= dirs.css %>/style.css': '<%= dirs.css %>/style.scss'
@@ -128,9 +130,9 @@ module.exports = function(grunt) {
         copy: {
           main: {
             files: [
-              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},            
-              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'},            
-              {expand: true, cwd: '<%= dirs.bower %>/svg-spinners/', src: ['loading-*.svg'], dest: '<%= dirs.svg %>'}            
+              {expand: true, cwd: '<%= dirs.bower %>/bootstrap-sass-official/assets/fonts/bootstrap/', src: ['**'], dest: '<%= dirs.fonts %>'},
+              {expand: true, cwd: '<%= dirs.bower %>/chosen/', src: ['chosen-sprite*'], dest: '<%= dirs.css %>'},
+              {expand: true, cwd: '<%= dirs.bower %>/svg-spinners/', src: ['loading-*.svg'], dest: '<%= dirs.svg %>'}
             ]
           }
         },
