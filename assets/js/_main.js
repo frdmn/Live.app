@@ -5,7 +5,7 @@ $(function() {
         // If ⌘ + 0 (Mac) or CTRL + 0 (Windows)
         if ((e.keyCode == 48 && e.metaKey) || (e.keyCode == 48 && e.ctrlKey)) {
             // Check if require exists (node-webkit)
-            if (require) { 
+            if (require) {
                 var gui = require('nw.gui');
                 var win = gui.Window.get();
                 // Show dev tools
@@ -14,7 +14,7 @@ $(function() {
         }
     });
 
-    /* Sidebar toggle */ 
+    /* Sidebar toggle */
 
     $("#menu-toggle").click(function(e) {
         // Prevent stadard <button> behaviour
@@ -40,7 +40,7 @@ $(function() {
         });
     });
 
-    // Clear input and textareas on close of compose window 
+    // Clear input and textareas on close of compose window
     $('.modal#composemessage').on('hidden.bs.modal', function () {
         $('.modal#composemessage textarea').html('');
         $('.modal#composemessage select.chosen-recipients').empty();
@@ -57,16 +57,16 @@ $(function() {
         type: 'GET',
         url: settingsFile,
         dataType: 'json',
-        success: function(data) { 
-            settings = data; 
-            log.setLevel(settings.logging); 
-            log.info('[INFO] Using "' + settings.logging + '" log level'); 
+        success: function(data) {
+            settings = data;
+            log.setLevel(settings.logging);
+            log.info('[INFO] Using "' + settings.logging + '" log level');
             log.debug('[DEBUG] Settings stored in variable'); },
         async: false
     });
 
     /* Execute function to clear local DBs */
-  
+
     $(".clearlocaldb-submit").click(function(e) {
         // Disable login button to prevent duplicate submits
         $(this).attr("disabled", "disabled");
@@ -83,7 +83,7 @@ $(function() {
                     }
                 });
             });
-         
+
             // Initiate refresh, to show first start modal again
             log.debug('[DEBUG] Refresh in 1.5 seconds');
             setTimeout(function(){
@@ -112,7 +112,7 @@ $(function() {
 
                 // Check API key
                 checkApiKey(settingsData.apiKey, function(data){
-                    // If invalid API key show notification 
+                    // If invalid API key show notification
                     // otherwise execute function to save settings
                     if (!data) {
                         $('.modal#settings .submit-button').attr("disabled", false);
@@ -122,12 +122,12 @@ $(function() {
                         settingsData.gamerTag = data.gamerTag;
 
                         submitDbData(settingsData, 'settings', function(){
-                            if (data) {                              
+                            if (data) {
                                 // Wait 2 seconds for the notfication, then reload to show the dashboard
                                 log.debug("[DEBUG] Wait 2 seconds, then reload");
                                 setTimeout(function() {
                                     location.reload();
-                                }, 2000);    
+                                }, 2000);
                             }
                         });
                     }
@@ -135,12 +135,12 @@ $(function() {
             });
         } else {
             log.info('[INFO] "settings" database found. Using API key: ' + data.apiKey);
-            
+
             // Init variable to store API key out of DB
             var DBapiKey = data.apiKey;
 
             /* Execute function to send message on submit */
-    
+
             $('.modal#composemessage .submit-button').click(function(e) {
                 // Disable login button to prevent duplicate submits
                 $(this).attr("disabled", "disabled");
@@ -197,10 +197,16 @@ $(function() {
                 var presenceObject = {};
                 presenceObject.users = xuidList;
 
+
                 // Update connectivity indicators initially and every settings.cache.presence seconds
-                updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence);
+                updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence, function (data){
+                    sortFriendsList('.friendlist');
+                });
+
                 setInterval(function(){
-                    updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence);
+                    updateConnectivityIndicator(DBapiKey, presenceObject, settings.cache.presence, function (data){
+                        sortFriendsList('.friendlist');
+                    });
                 },settings.cache.presence * 1000);
 
                 // Add click() function to open #composemessage modal
