@@ -1,4 +1,4 @@
-/* Function to open modal */ 
+/* Function to open modal */
 
 var renderModal = function(recipientsList, messagebody){
     // Selector helpers
@@ -42,7 +42,7 @@ var renderModal = function(recipientsList, messagebody){
                     $(recipientsList).each(function(k, v){
                         $(recipientsSelector + ' option[value="' + v.xuid + '"]').attr('selected',true);
                     });
-                    
+
                     // Init the chosen select and show the modal
                     $(recipientsSelector).chosen({ width:"100%" });
                     // Update in case chosen instance is already initiated
@@ -61,7 +61,7 @@ var renderModal = function(recipientsList, messagebody){
 var listPouchDBs = function(callback){
     // Use pouchdb-all-dbs plugin to list all existing PouchDBs
     PouchDB.allDbs().then(function (dbs) {
-        // Send databases as string array to callback  
+        // Send databases as string array to callback
         callback(dbs);
     }).catch(function (err) {
         // In case of error, log and callback(false)
@@ -71,7 +71,7 @@ var listPouchDBs = function(callback){
 };
 
 /* Function to delete a database */
- 
+
 var deletePouchDB = function(database, callback){
     // PouchDB init
     var pouchdb = new PouchDB(database);
@@ -89,7 +89,7 @@ var deletePouchDB = function(database, callback){
 };
 
 /* Function to show/hide spinner */
- 
+
 var showLoadingSpinner = function() {
     // Show actual spinner
     $('.icon-loading').show();
@@ -103,3 +103,13 @@ var hideLoadingSpinner = function() {
     // And the spinning wheel cursor
     $('html').removeClass('wait-cursor');
 };
+
+/* Sort friends based on connectivity status */
+
+function sortFriendsList(selector) {
+    $(selector).children("li").sort(function(a, b) {
+        var upA = $(a).find('span').hasClass('bubble--offline');
+        var upB = $(b).find('span').hasClass('bubble--offline');
+        return (upA < upB) ? -1 : (upA > upB) ? 1 : 0;
+    }).appendTo(selector);
+}
