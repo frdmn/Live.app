@@ -28,7 +28,7 @@ Mobile view
 1. Clone the repository:  
   `git clone https://github.com/frdmn/Live.app`
 2. Duplicate and rename the example settings file:  
-  `cp settings-example.json	settings.json`  
+  `cp settings-example.json settings.json`  
 3. Adjust the users and the log file path in the configuration file:  
   `editor settings.json`
 4. Install dependencies:  
@@ -63,4 +63,4 @@ Mobile view
 
 ## License
 
-[WTFPL](LICENSE)
+[MIT](LICENSE)
